@@ -1,0 +1,74 @@
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { DatabaseService } from '../core/database';
+import { AccountService } from '../core/services';
+import { formatCurrency } from '../core/utils';
+import type { Account } from '../core/models/account.model';
+import type { ViewWillEnter } from '@ionic/angular';
+
+@Component({
+  selector: 'app-accounts',
+  templateUrl: './accounts.page.html',
+  styleUrls: ['./accounts.page.scss'],
+  standalone: false,
+})
+export class AccountsPage implements OnInit, ViewWillEnter {
+  accounts: Account[] = [];
+  loading = true;
+  error: string | null = null;
+  locale = 'es';
+
+  constructor(
+    private database: DatabaseService,
+    private accountService: AccountService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  async ngOnInit(): Promise<void> {
+    try {
+      await this.database.init();
+      await this.load();
+    } catch (e) {
+      this.error = e instanceof Error ? e.message : 'Error al cargar cuentas';
+      this.loading = false;
+    }
+    this.cdr.detectChanges();
+  }
+
+  ionViewWillEnter(): void {
+    if (this.database.isOpen()) {
+      this.load();
+    }
+  }
+
+  async load(): Promise<void> {
+    this.loading = true;
+    this.error = null;
+    this.cdr.detectChanges();
+    try {
+      this.accounts = await this.accountService.getAll();
+      for (const a of this.accounts) {
+        await this.accountService.recalculateBalance(a.id);
+      }
+      this.accounts = await this.accountService.getAll();
+    } catch (e) {
+      this.error = e instanceof Error ? e.message : 'Error al cargar';
+    } finally {
+      this.loading = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  formatMoney(amount: number | undefined, currencyCode: string): string {
+    return formatCurrency(amount ?? 0, currencyCode, this.locale);
+  }
+
+  goToNew(): void {
+    this.router.navigate(['/accounts', 'new']);
+  }
+
+  goToEdit(id: number): void {
+    this.router.navigate(['/accounts', id]);
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "APP": {
+    "NAME": "App Gastos CCS Solutions",
+    "TITLE": "App Gastos CCS Solutions"
+  },
+  "TABS": {
+    "TAB1": "Inicio",
+    "TAB2": "Explorar",
+    "TAB3": "Más"
+  },
+  "HOME": {
+    "TITLE": "Inicio",
+    "BALANCE": "Balance",
+    "TOTAL_INCOME": "Ingresos",
+    "TOTAL_EXPENSE": "Gastos",
+    "THIS_MONTH": "Este mes",
+    "NO_DATA": "Aún no hay movimientos. Añade gastos o ingresos desde Explorar."
+  },
+  "EXPLORE": {
+    "TITLE": "Explorar",
+    "MOVEMENTS": "Movimientos",
+    "FILTERS": "Filtros",
+    "NO_MOVEMENTS": "No hay movimientos con los filtros seleccionados.",
+    "EXPENSE": "Gasto",
+    "INCOME": "Ingreso"
+  },
+  "MORE": {
+    "TITLE": "Más",
+    "STATISTICS": "Estadísticas",
+    "SETTINGS": "Configuración",
+    "ACCOUNTS": "Cuentas",
+    "CATEGORIES": "Categorías",
+    "BUDGETS": "Presupuestos"
+  },
+  "COMMON": {
+    "SAVE": "Guardar",
+    "CANCEL": "Cancelar",
+    "DELETE": "Eliminar",
+    "EDIT": "Editar",
+    "ADD": "Añadir",
+    "CLOSE": "Cerrar",
+    "CONFIRM": "Confirmar",
+    "BACK": "Volver",
+    "NEXT": "Siguiente",
+    "LOADING": "Cargando...",
+    "ERROR": "Error",
+    "OK": "Aceptar"
+  },
+  "SETTINGS": {
+    "TITLE": "Configuración",
+    "LANGUAGE": "Idioma",
+    "THEME": "Tema",
+    "THEME_LIGHT": "Claro",
+    "THEME_DARK": "Oscuro",
+    "THEME_SYSTEM": "Según sistema",
+    "CURRENCY": "Moneda",
+    "BUDGET_ALERTS": "Avisos de presupuesto"
+  },
+  "CATEGORY_FORM": {
+    "ICON": "Icono"
+  },
+  "CATEGORIES": {
+    "FOOD": "Comida",
+    "TRANSPORT": "Transporte",
+    "LEISURE": "Ocio",
+    "HEALTH": "Salud",
+    "HOME": "Hogar",
+    "SHOPPING": "Compras",
+    "SUBSCRIPTIONS": "Suscripciones",
+    "OTHER": "Otros",
+    "SALARY": "Salario",
+    "FREELANCE": "Freelance",
+    "INVESTMENTS": "Inversiones",
+    "GIFTS": "Regalos / Donaciones"
+  }
+}

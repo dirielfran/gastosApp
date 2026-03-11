@@ -1,0 +1,7 @@
+{
+  "name": "app-gastos-ccs",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

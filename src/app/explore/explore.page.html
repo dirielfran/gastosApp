@@ -1,0 +1,39 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>{{ 'EXPLORE.TITLE' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="ion-padding ion-text-center" *ngIf="loading">
+    <ion-spinner></ion-spinner>
+    <p>{{ 'COMMON.LOADING' | translate }}</p>
+  </div>
+
+  <ion-list lines="full" *ngIf="!loading && movements.length > 0">
+    <ion-item *ngFor="let m of movements" button (click)="goToEditMovement(m.id)">
+      <ion-label>
+        <h2>{{ getCategoryNameById(m.categoryId) }}</h2>
+        <p>{{ m.movementDate }} · {{ m.type === 'income' ? ('EXPLORE.INCOME' | translate) : ('EXPLORE.EXPENSE' | translate) }}</p>
+      </ion-label>
+      <ion-note slot="end" [color]="m.type === 'income' ? 'success' : 'danger'">
+        {{ m.type === 'income' ? '+' : '-' }}{{ m.amount | number:'1.2-2' }}
+      </ion-note>
+    </ion-item>
+  </ion-list>
+
+  <div class="ion-padding" *ngIf="!loading && movements.length === 0">
+    <p>{{ 'EXPLORE.NO_MOVEMENTS' | translate }}</p>
+    <ion-button expand="block" (click)="goToAddMovement()">{{ 'COMMON.ADD' | translate }}</ion-button>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="goToAddMovement()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

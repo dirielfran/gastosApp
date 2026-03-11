@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/accounts"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ id == null ? 'Nueva cuenta' : 'Editar cuenta' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list class="ion-padding">
+    <ion-item>
+      <ion-label position="stacked">Nombre</ion-label>
+      <ion-input [(ngModel)]="name" type="text" placeholder="Ej. Efectivo, Banco"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Moneda</ion-label>
+      <ion-select [(ngModel)]="currencyCode" interface="action-sheet">
+        <ion-select-option *ngFor="let c of currencies" [value]="c">{{ c }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  <div class="ion-padding">
+    <ion-button expand="block" (click)="save()" [disabled]="saving || !name.trim()">
+      {{ 'COMMON.SAVE' | translate }}
+    </ion-button>
+    <ion-button expand="block" fill="outline" (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</ion-button>
+  </div>
+</ion-content>

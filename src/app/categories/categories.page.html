@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/more"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ 'MORE.CATEGORIES' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToNew()">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list lines="full" *ngIf="!loading && categories.length > 0">
+    <ion-item *ngFor="let c of categories" button (click)="goToEdit(c.id)">
+      <ion-icon [name]="c.icon || 'pricetag-outline'" slot="start" [style.color]="c.color || ''"></ion-icon>
+      <ion-label>{{ getDisplayName(c) }}</ion-label>
+      <ion-icon name="chevron-forward" slot="end"></ion-icon>
+    </ion-item>
+  </ion-list>
+  <div class="ion-padding" *ngIf="!loading && categories.length === 0">
+    <p>No hay categorías.</p>
+    <ion-button expand="block" (click)="goToNew()">{{ 'COMMON.ADD' | translate }}</ion-button>
+  </div>
+</ion-content>

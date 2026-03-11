@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>App Gastos CCS</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">{{ 'HOME.TITLE' | translate }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="ion-padding">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-subtitle>{{ 'HOME.THIS_MONTH' | translate }}</ion-card-subtitle>
+        <ion-card-title>{{ 'HOME.BALANCE' | translate }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content *ngIf="!loading">
+        <p><strong>{{ 'HOME.TOTAL_INCOME' | translate }}:</strong> {{ formatMoney(income) }}</p>
+        <p><strong>{{ 'HOME.TOTAL_EXPENSE' | translate }}:</strong> {{ formatMoney(expense) }}</p>
+        <p><strong>{{ 'HOME.BALANCE' | translate }}:</strong> {{ formatMoney(balance) }}</p>
+      </ion-card-content>
+      <ion-card-content *ngIf="loading">
+        <ion-spinner></ion-spinner>
+      </ion-card-content>
+    </ion-card>
+
+    <p class="ion-text-secondary ion-margin-top">{{ 'HOME.NO_DATA' | translate }}</p>
+  </div>
+</ion-content>

@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>{{ 'MORE.TITLE' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="menu-list">
+    <ion-button expand="block" fill="clear" class="menu-row" (click)="goTo('accounts')">
+      <ion-icon name="wallet-outline" slot="start"></ion-icon>
+      {{ 'MORE.ACCOUNTS' | translate }}
+      <ion-icon name="chevron-forward" slot="end"></ion-icon>
+    </ion-button>
+    <ion-button expand="block" fill="clear" class="menu-row" (click)="goTo('categories')">
+      <ion-icon name="pricetags-outline" slot="start"></ion-icon>
+      {{ 'MORE.CATEGORIES' | translate }}
+      <ion-icon name="chevron-forward" slot="end"></ion-icon>
+    </ion-button>
+    <ion-button expand="block" fill="clear" class="menu-row" (click)="goTo('budgets')">
+      <ion-icon name="pie-chart-outline" slot="start"></ion-icon>
+      {{ 'MORE.BUDGETS' | translate }}
+      <ion-icon name="chevron-forward" slot="end"></ion-icon>
+    </ion-button>
+    <ion-button expand="block" fill="clear" class="menu-row" (click)="goTo('settings')">
+      <ion-icon name="settings-outline" slot="start"></ion-icon>
+      {{ 'MORE.SETTINGS' | translate }}
+      <ion-icon name="chevron-forward" slot="end"></ion-icon>
+    </ion-button>
+  </div>
+</ion-content>

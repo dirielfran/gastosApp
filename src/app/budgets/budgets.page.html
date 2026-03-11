@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/more"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ 'MORE.BUDGETS' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToNew()">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list lines="full" *ngIf="!loading && budgets.length > 0">
+    <ion-item *ngFor="let b of budgets" button (click)="goToEdit(b.id)">
+      <ion-label>
+        <h2>{{ getCategoryName(b.categoryId) }}</h2>
+        <p>Límite: {{ b.amountLimit | number:'1.2-2' }} · Aviso al {{ b.alertThresholdPercent }}%</p>
+      </ion-label>
+      <ion-icon name="chevron-forward" slot="end"></ion-icon>
+    </ion-item>
+  </ion-list>
+  <div class="ion-padding" *ngIf="!loading && budgets.length === 0">
+    <p>No hay presupuestos. Añade uno desde Configuración o aquí.</p>
+    <ion-button expand="block" (click)="goToNew()">{{ 'COMMON.ADD' | translate }}</ion-button>
+  </div>
+</ion-content>

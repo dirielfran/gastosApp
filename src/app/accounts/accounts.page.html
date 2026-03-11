@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/more"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ 'MORE.ACCOUNTS' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToNew()">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <!-- Siempre visible: título de sección -->
+  <h2 class="ion-margin-bottom">Cuentas</h2>
+
+  <div *ngIf="loading" class="ion-padding">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando cuentas...</p>
+  </div>
+
+  <div *ngIf="error" class="ion-padding">
+    <p class="ion-text-color-danger">{{ error }}</p>
+    <ion-button expand="block" (click)="load()">Reintentar</ion-button>
+  </div>
+
+  <ion-list lines="full" *ngIf="!loading && !error && accounts.length > 0">
+    <ion-item *ngFor="let a of accounts" button (click)="goToEdit(a.id)">
+      <ion-label>
+        <h2>{{ a.name }}</h2>
+        <p>{{ a.currencyCode }}</p>
+      </ion-label>
+      <ion-note slot="end">{{ formatMoney(a.balance, a.currencyCode) }}</ion-note>
+    </ion-item>
+  </ion-list>
+
+  <div *ngIf="!loading && !error && accounts.length === 0" class="ion-padding">
+    <p>No hay cuentas. Añade una para empezar.</p>
+    <ion-button expand="block" (click)="goToNew()">Añadir</ion-button>
+  </div>
+</ion-content>

@@ -1,0 +1,35 @@
+// Category form
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  padding: 0 16px 16px;
+}
+
+.icon-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 2px solid var(--ion-color-medium);
+  border-radius: 8px;
+  background: var(--ion-background-color);
+  padding: 0;
+  cursor: pointer;
+
+  ion-icon {
+    font-size: 28px;
+    color: var(--ion-text-color);
+  }
+
+  &.selected {
+    border-color: var(--ion-color-primary);
+    background: rgba(var(--ion-color-primary-rgb), 0.12);
+
+    ion-icon {
+      color: var(--ion-color-primary);
+    }
+  }
+}

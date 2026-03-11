@@ -1,0 +1,76 @@
+{
+  "APP": {
+    "NAME": "App Gastos CCS Solutions",
+    "TITLE": "App Gastos CCS Solutions"
+  },
+  "TABS": {
+    "TAB1": "Home",
+    "TAB2": "Explore",
+    "TAB3": "More"
+  },
+  "HOME": {
+    "TITLE": "Home",
+    "BALANCE": "Balance",
+    "TOTAL_INCOME": "Income",
+    "TOTAL_EXPENSE": "Expenses",
+    "THIS_MONTH": "This month",
+    "NO_DATA": "No movements yet. Add expenses or income from Explore."
+  },
+  "EXPLORE": {
+    "TITLE": "Explore",
+    "MOVEMENTS": "Movements",
+    "FILTERS": "Filters",
+    "NO_MOVEMENTS": "No movements match the selected filters.",
+    "EXPENSE": "Expense",
+    "INCOME": "Income"
+  },
+  "MORE": {
+    "TITLE": "More",
+    "STATISTICS": "Statistics",
+    "SETTINGS": "Settings",
+    "ACCOUNTS": "Accounts",
+    "CATEGORIES": "Categories",
+    "BUDGETS": "Budgets"
+  },
+  "COMMON": {
+    "SAVE": "Save",
+    "CANCEL": "Cancel",
+    "DELETE": "Delete",
+    "EDIT": "Edit",
+    "ADD": "Add",
+    "CLOSE": "Close",
+    "CONFIRM": "Confirm",
+    "BACK": "Back",
+    "NEXT": "Next",
+    "LOADING": "Loading...",
+    "ERROR": "Error",
+    "OK": "OK"
+  },
+  "SETTINGS": {
+    "TITLE": "Settings",
+    "LANGUAGE": "Language",
+    "THEME": "Theme",
+    "THEME_LIGHT": "Light",
+    "THEME_DARK": "Dark",
+    "THEME_SYSTEM": "System",
+    "CURRENCY": "Currency",
+    "BUDGET_ALERTS": "Budget alerts"
+  },
+  "CATEGORY_FORM": {
+    "ICON": "Icon"
+  },
+  "CATEGORIES": {
+    "FOOD": "Food",
+    "TRANSPORT": "Transport",
+    "LEISURE": "Leisure",
+    "HEALTH": "Health",
+    "HOME": "Home",
+    "SHOPPING": "Shopping",
+    "SUBSCRIPTIONS": "Subscriptions",
+    "OTHER": "Other",
+    "SALARY": "Salary",
+    "FREELANCE": "Freelance",
+    "INVESTMENTS": "Investments",
+    "GIFTS": "Gifts / Donations"
+  }
+}

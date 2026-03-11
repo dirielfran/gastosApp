@@ -1,0 +1,14 @@
+// Asegurar que el outlet ocupe espacio y el contenido sea clickeable
+:host ion-tabs {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+:host ::ng-deep ion-router-outlet {
+  flex: 1;
+  contain: none;
+  pointer-events: auto !important;
+  display: block;
+  position: relative;
+}

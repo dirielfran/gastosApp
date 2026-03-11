@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/more"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ 'SETTINGS.TITLE' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list lines="full">
+    <ion-list-header>
+      <ion-label>{{ 'SETTINGS.LANGUAGE' | translate }}</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-select [(ngModel)]="language" (ionChange)="onLanguageChange()" interface="action-sheet">
+        <ion-select-option *ngFor="let l of languages" [value]="l.value">{{ l.label }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-list-header>
+      <ion-label>{{ 'SETTINGS.THEME' | translate }}</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-select [(ngModel)]="theme" (ionChange)="onThemeChange()" interface="action-sheet">
+        <ion-select-option *ngFor="let t of themes" [value]="t.value">{{ t.label | translate }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-list-header>
+      <ion-label>{{ 'SETTINGS.BUDGET_ALERTS' | translate }}</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-toggle [(ngModel)]="budgetAlertsEnabled" (ionChange)="onBudgetAlertsChange()"></ion-toggle>
+    </ion-item>
+  </ion-list>
+</ion-content>

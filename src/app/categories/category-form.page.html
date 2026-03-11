@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/categories"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ isNew ? 'Nueva categoría' : 'Editar categoría' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list class="ion-padding">
+    <ion-item>
+      <ion-label position="stacked">Nombre</ion-label>
+      <ion-input [(ngModel)]="nameCustom" type="text" placeholder="Ej. Supermercado"></ion-input>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label position="stacked">{{ 'CATEGORY_FORM.ICON' | translate }}</ion-label>
+    </ion-item>
+    <div class="icon-grid">
+      <button
+        *ngFor="let opt of iconOptions"
+        type="button"
+        class="icon-option"
+        [class.selected]="icon === opt"
+        [attr.aria-label]="opt"
+        (click)="icon = opt"
+      >
+        <ion-icon [name]="opt"></ion-icon>
+      </button>
+    </div>
+    <ion-item>
+      <ion-label position="stacked">Color</ion-label>
+      <ion-input [(ngModel)]="color" type="color"></ion-input>
+    </ion-item>
+  </ion-list>
+  <div class="ion-padding">
+    <ion-button expand="block" (click)="save()">{{ 'COMMON.SAVE' | translate }}</ion-button>
+    <ion-button expand="block" fill="outline" (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</ion-button>
+  </div>
+</ion-content>

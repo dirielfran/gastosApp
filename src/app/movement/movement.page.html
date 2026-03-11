@@ -1,0 +1,51 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/explore"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ id == null ? 'Nuevo movimiento' : 'Editar movimiento' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list class="ion-padding">
+    <ion-item>
+      <ion-label position="stacked">Tipo</ion-label>
+      <ion-segment [(ngModel)]="type">
+        <ion-segment-button value="expense">{{ 'EXPLORE.EXPENSE' | translate }}</ion-segment-button>
+        <ion-segment-button value="income">{{ 'EXPLORE.INCOME' | translate }}</ion-segment-button>
+      </ion-segment>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Cuenta</ion-label>
+      <ion-select [(ngModel)]="accountId" interface="action-sheet">
+        <ion-select-option *ngFor="let a of accounts" [value]="a.id">{{ a.name }} ({{ a.currencyCode }})</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Categoría</ion-label>
+      <ion-select [(ngModel)]="categoryId" interface="action-sheet">
+        <ion-select-option *ngFor="let c of categories" [value]="c.id">{{ getCategoryName(c) }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Importe</ion-label>
+      <ion-input [(ngModel)]="amount" type="number" min="0" step="0.01" placeholder="0.00"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Fecha</ion-label>
+      <ion-input [(ngModel)]="movementDate" type="date"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Nota</ion-label>
+      <ion-input [(ngModel)]="note" type="text" placeholder="Opcional"></ion-input>
+    </ion-item>
+  </ion-list>
+  <div class="ion-padding">
+    <ion-button expand="block" (click)="save()" [disabled]="saving || accountId == null || categoryId == null || !amount || amount <= 0">
+      {{ 'COMMON.SAVE' | translate }}
+    </ion-button>
+    <ion-button expand="block" fill="outline" (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</ion-button>
+    <ion-button *ngIf="id != null" expand="block" fill="outline" color="danger" (click)="delete()">{{ 'COMMON.DELETE' | translate }}</ion-button>
+  </div>
+</ion-content>
