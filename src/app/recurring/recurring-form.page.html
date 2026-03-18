@@ -1,0 +1,58 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/recurring"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ id == null ? ('RECURRING.NEW_TITLE' | translate) : ('RECURRING.EDIT_TITLE' | translate) }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list class="ion-padding">
+    <ion-item>
+      <ion-label position="stacked">{{ 'MOVEMENT_FORM.TYPE' | translate }}</ion-label>
+      <ion-segment [(ngModel)]="type">
+        <ion-segment-button value="expense">{{ 'EXPLORE.EXPENSE' | translate }}</ion-segment-button>
+        <ion-segment-button value="income">{{ 'EXPLORE.INCOME' | translate }}</ion-segment-button>
+      </ion-segment>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">{{ 'MOVEMENT_FORM.ACCOUNT' | translate }}</ion-label>
+      <ion-select [(ngModel)]="accountId" interface="action-sheet">
+        <ion-select-option *ngFor="let a of accounts" [value]="a.id">{{ a.name }} ({{ a.currencyCode }})</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">{{ 'MOVEMENT_FORM.CATEGORY' | translate }}</ion-label>
+      <ion-select [(ngModel)]="categoryId" interface="action-sheet">
+        <ion-select-option *ngFor="let c of categories" [value]="c.id">{{ getCategoryName(c) }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">{{ 'MOVEMENT_FORM.AMOUNT' | translate }}</ion-label>
+      <ion-input [(ngModel)]="amount" type="number" min="0" step="0.01" placeholder="0.00"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">{{ 'RECURRING.FREQUENCY' | translate }}</ion-label>
+      <ion-select [(ngModel)]="frequency" interface="popover">
+        <ion-select-option value="monthly">{{ 'RECURRING.MONTHLY' | translate }}</ion-select-option>
+        <ion-select-option value="weekly">{{ 'RECURRING.WEEKLY' | translate }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="frequency === 'monthly'">
+      <ion-label position="stacked">{{ 'RECURRING.DAY' | translate }}</ion-label>
+      <ion-input [(ngModel)]="dayOfMonth" type="number" min="1" max="31"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">{{ 'MOVEMENT_FORM.NOTE' | translate }}</ion-label>
+      <ion-input [(ngModel)]="note" type="text" [placeholder]="'MOVEMENT_FORM.NOTE_PLACEHOLDER' | translate"></ion-input>
+    </ion-item>
+  </ion-list>
+  <div class="ion-padding">
+    <ion-button expand="block" (click)="save()" [disabled]="saving || accountId == null || categoryId == null || !amount || amount <= 0">
+      {{ 'COMMON.SAVE' | translate }}
+    </ion-button>
+    <ion-button expand="block" fill="outline" (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</ion-button>
+    <ion-button *ngIf="id != null" expand="block" fill="outline" color="danger" (click)="confirmDelete()">{{ 'COMMON.DELETE' | translate }}</ion-button>
+  </div>
+</ion-content>

@@ -73,6 +73,34 @@ export function mapMovementRow(r: Record<string, unknown>): {
   };
 }
 
+export function mapRecurringMovementRow(r: Record<string, unknown>): {
+  id: number;
+  accountId: number;
+  categoryId: number;
+  type: 'expense' | 'income';
+  amount: number;
+  note: string | null;
+  frequency: 'monthly' | 'weekly';
+  dayOfMonth: number;
+  isActive: number;
+  createdAt: string;
+  updatedAt: string;
+} {
+  return {
+    id: Number(r['id']),
+    accountId: Number(r['account_id']),
+    categoryId: Number(r['category_id']),
+    type: r['type'] === 'income' ? 'income' : 'expense',
+    amount: Number(r['amount']),
+    note: r['note'] != null ? String(r['note']) : null,
+    frequency: r['frequency'] === 'weekly' ? 'weekly' : 'monthly',
+    dayOfMonth: Number(r['day_of_month']),
+    isActive: Number(r['is_active']),
+    createdAt: String(r['created_at']),
+    updatedAt: String(r['updated_at']),
+  };
+}
+
 export function mapBudgetRow(r: Record<string, unknown>): {
   id: number;
   categoryId: number;

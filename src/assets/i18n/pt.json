@@ -22,7 +22,14 @@
     "FILTERS": "Filtros",
     "NO_MOVEMENTS": "Nenhum movimento com os filtros selecionados.",
     "EXPENSE": "Despesa",
-    "INCOME": "Receita"
+    "INCOME": "Receita",
+    "ALL": "Todos",
+    "FILTER_TYPE": "Tipo",
+    "FILTER_ACCOUNT": "Conta",
+    "FILTER_CATEGORY": "Categoria",
+    "FILTER_DATE_FROM": "De",
+    "FILTER_DATE_TO": "Até",
+    "CLEAR_FILTERS": "Limpar filtros"
   },
   "MORE": {
     "TITLE": "Mais",
@@ -30,7 +37,9 @@
     "SETTINGS": "Configurações",
     "ACCOUNTS": "Contas",
     "CATEGORIES": "Categorias",
-    "BUDGETS": "Orçamentos"
+    "BUDGETS": "Orçamentos",
+    "ABOUT": "Sobre",
+    "RECURRING": "Recorrentes"
   },
   "COMMON": {
     "SAVE": "Guardar",
@@ -44,7 +53,13 @@
     "NEXT": "Próximo",
     "LOADING": "Carregando...",
     "ERROR": "Erro",
-    "OK": "OK"
+    "OK": "OK",
+    "REQUIRED": "Campo obrigatório",
+    "CONFIRM_DELETE_TITLE": "Confirmar exclusão",
+    "CONFIRM_DELETE_MSG": "Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita.",
+    "RETRY": "Tentar novamente",
+    "EXPORT": "Exportar",
+    "VERSION": "Versão"
   },
   "SETTINGS": {
     "TITLE": "Configurações",
@@ -56,8 +71,96 @@
     "CURRENCY": "Moeda",
     "BUDGET_ALERTS": "Alertas de orçamento"
   },
+  "BUDGET_ALERTS": {
+    "TOAST_MESSAGE": "Orçamento: atingiu {{percent}}% do limite ({{limit}})"
+  },
+  "MOVEMENT_FORM": {
+    "NEW_TITLE": "Novo movimento",
+    "EDIT_TITLE": "Editar movimento",
+    "TYPE": "Tipo",
+    "ACCOUNT": "Conta",
+    "CATEGORY": "Categoria",
+    "AMOUNT": "Valor",
+    "DATE": "Data",
+    "NOTE": "Nota",
+    "NOTE_PLACEHOLDER": "Opcional",
+    "AMOUNT_ERROR": "O valor deve ser maior que 0",
+    "NO_ACCOUNTS_MSG": "Você precisa de pelo menos uma conta e uma categoria para criar um movimento."
+  },
+  "ACCOUNT_FORM": {
+    "NEW_TITLE": "Nova conta",
+    "EDIT_TITLE": "Editar conta",
+    "NAME": "Nome",
+    "NAME_PLACEHOLDER": "Ex. Dinheiro, Banco",
+    "CURRENCY": "Moeda"
+  },
+  "ACCOUNTS": {
+    "TITLE": "Contas",
+    "LOADING": "Carregando contas...",
+    "NO_ACCOUNTS": "Ainda não há contas. Adicione uma para começar."
+  },
   "CATEGORY_FORM": {
-    "ICON": "Ícone"
+    "NEW_TITLE": "Nova categoria",
+    "EDIT_TITLE": "Editar categoria",
+    "NAME": "Nome",
+    "NAME_PLACEHOLDER": "Ex. Supermercado",
+    "ICON": "Ícone",
+    "COLOR": "Cor"
+  },
+  "CATEGORIES_PAGE": {
+    "NO_CATEGORIES": "Não há categorias."
+  },
+  "BUDGET_FORM": {
+    "NEW_TITLE": "Novo orçamento",
+    "EDIT_TITLE": "Editar orçamento",
+    "CATEGORY": "Categoria",
+    "MONTHLY_LIMIT": "Limite mensal",
+    "ALERT_PERCENT": "Alerta em %"
+  },
+  "BUDGETS": {
+    "SPENT": "Gasto",
+    "LIMIT": "Limite",
+    "EXCEEDED": "Excedido",
+    "NO_BUDGETS": "Ainda não há orçamentos. Adicione um daqui."
+  },
+  "STATISTICS": {
+    "TITLE": "Estatísticas",
+    "PERIOD": "Período",
+    "THIS_MONTH": "Este mês",
+    "LAST_MONTH": "Mês passado",
+    "TOTAL_EXPENSE": "Total de despesas",
+    "EXPENSE_BY_CATEGORY": "Despesa por categoria",
+    "INCOME_BY_CATEGORY": "Receita por categoria",
+    "TOTAL_INCOME": "Total de receitas",
+    "LAST_3_MONTHS": "Últimos 3 meses",
+    "THIS_YEAR": "Este ano",
+    "NO_DATA": "Não há dados neste período."
+  },
+  "TRANSFER": {
+    "TITLE": "Transferência",
+    "FROM": "Conta de origem",
+    "TO": "Conta de destino",
+    "EXECUTE": "Transferir",
+    "TAG": "Transferência",
+    "SUCCESS": "Transferência realizada com sucesso",
+    "NEED_TWO_ACCOUNTS": "Você precisa de pelo menos duas contas para fazer uma transferência."
+  },
+  "RECURRING": {
+    "TITLE": "Movimentos recorrentes",
+    "NEW_TITLE": "Novo recorrente",
+    "EDIT_TITLE": "Editar recorrente",
+    "DAY": "Dia do mês",
+    "NO_ITEMS": "Não há movimentos recorrentes. Adicione um para automatizar despesas ou receitas mensais.",
+    "TAG": "Recorrente",
+    "FREQUENCY": "Frequência",
+    "MONTHLY": "Mensal",
+    "WEEKLY": "Semanal"
+  },
+  "ABOUT": {
+    "TITLE": "Sobre",
+    "DESCRIPTION": "Aplicativo para registro de despesas, receitas e estatísticas.",
+    "AUTHOR": "Autor",
+    "AUTHOR_NAME": "CCS Solutions"
   },
   "CATEGORIES": {
     "FOOD": "Alimentação",

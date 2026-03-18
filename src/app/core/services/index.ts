@@ -1,7 +1,10 @@
 export { AccountService } from './account.service';
+export { BudgetAlertService } from './budget-alert.service';
+export { ExportService } from './export.service';
 export { BudgetService } from './budget.service';
 export { CategoryService } from './category.service';
 export { ExploreRefreshService } from './explore-refresh.service';
 export { MovementService } from './movement.service';
+export { RecurringService } from './recurring.service';
 export { SettingsService } from './settings.service';
 export { ThemeService } from './theme.service';

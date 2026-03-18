@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 import { DatabaseService } from '../core/database';
 import { CategoryService } from '../core/services';
 import type { CategoryCreate } from '../core/models/category.model';
@@ -49,6 +51,8 @@ export class CategoryFormPage implements OnInit {
   constructor(
     private database: DatabaseService,
     private categoryService: CategoryService,
+    private translate: TranslateService,
+    private alertCtrl: AlertController,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -90,6 +94,28 @@ export class CategoryFormPage implements OnInit {
     } catch (e) {
       console.error(e);
     }
+  }
+
+  async confirmDelete(): Promise<void> {
+    const alert = await this.alertCtrl.create({
+      header: this.translate.instant('COMMON.CONFIRM_DELETE_TITLE'),
+      message: this.translate.instant('COMMON.CONFIRM_DELETE_MSG'),
+      buttons: [
+        { text: this.translate.instant('COMMON.CANCEL'), role: 'cancel' },
+        {
+          text: this.translate.instant('COMMON.DELETE'),
+          role: 'destructive',
+          handler: () => this.doDelete(),
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  private async doDelete(): Promise<void> {
+    if (this.id == null) return;
+    await this.categoryService.delete(this.id);
+    this.router.navigate(['/categories']);
   }
 
   cancel(): void {

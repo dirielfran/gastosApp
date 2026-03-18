@@ -28,6 +28,26 @@ const routes: Routes = [
       import('./settings/settings.module').then((m) => m.SettingsPageModule),
   },
   {
+    path: 'statistics',
+    loadChildren: () =>
+      import('./statistics/statistics.module').then((m) => m.StatisticsPageModule),
+  },
+  {
+    path: 'transfer',
+    loadChildren: () =>
+      import('./transfer/transfer.module').then((m) => m.TransferPageModule),
+  },
+  {
+    path: 'recurring',
+    loadChildren: () =>
+      import('./recurring/recurring.module').then((m) => m.RecurringPageModule),
+  },
+  {
+    path: 'about',
+    loadChildren: () =>
+      import('./about/about.module').then((m) => m.AboutPageModule),
+  },
+  {
     path: 'movement/:id',
     loadChildren: () =>
       import('./movement/movement.module').then((m) => m.MovementPageModule),

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 import { DatabaseService } from '../core/database';
 import { AccountService } from '../core/services';
 import type { AccountCreate } from '../core/models/account.model';
@@ -22,6 +24,8 @@ export class AccountFormPage implements OnInit {
   constructor(
     private database: DatabaseService,
     private accountService: AccountService,
+    private translate: TranslateService,
+    private alertCtrl: AlertController,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -59,6 +63,28 @@ export class AccountFormPage implements OnInit {
     } finally {
       this.saving = false;
     }
+  }
+
+  async confirmDelete(): Promise<void> {
+    const alert = await this.alertCtrl.create({
+      header: this.translate.instant('COMMON.CONFIRM_DELETE_TITLE'),
+      message: this.translate.instant('COMMON.CONFIRM_DELETE_MSG'),
+      buttons: [
+        { text: this.translate.instant('COMMON.CANCEL'), role: 'cancel' },
+        {
+          text: this.translate.instant('COMMON.DELETE'),
+          role: 'destructive',
+          handler: () => this.doDelete(),
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  private async doDelete(): Promise<void> {
+    if (this.id == null) return;
+    await this.accountService.delete(this.id);
+    this.router.navigate(['/accounts']);
   }
 
   cancel(): void {

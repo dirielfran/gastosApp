@@ -112,3 +112,31 @@ $kiosco-info: #00897B;
   --app-color-info: #{$kiosco-info};
   --app-color-info-light: #e0f2f1;
 }
+
+// -----------------------------------------------------------------------------
+// Dark mode overrides (aplican cuando se añade .ion-palette-dark)
+// -----------------------------------------------------------------------------
+.ion-palette-dark {
+  --ion-color-primary: #{$kiosco-tech-blue};
+  --ion-color-primary-shade: #1560b9;
+  --ion-color-primary-tint: #5a9fe0;
+
+  --ion-color-secondary: #{$kiosco-cyan};
+  --ion-color-secondary-tint: #4dd0e1;
+
+  --ion-color-tertiary: #{$kiosco-purple};
+  --ion-color-tertiary-tint: #ba68c8;
+
+  --ion-color-success: #66bb6a;
+  --ion-color-success-tint: #81c784;
+
+  --ion-color-warning: #ffa726;
+  --ion-color-warning-tint: #ffb74d;
+
+  --ion-color-danger: #ef5350;
+  --ion-color-danger-tint: #e57373;
+
+  --ion-color-info: #26a69a;
+  --app-color-info: #26a69a;
+  --app-color-info-light: #1a3a36;
+}

@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/more"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ 'ABOUT.TITLE' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="about-content ion-padding ion-text-center">
+    <ion-icon name="wallet-outline" class="about-icon" color="primary"></ion-icon>
+    <h1>{{ 'APP.NAME' | translate }}</h1>
+    <p class="about-version">{{ 'COMMON.VERSION' | translate }}: {{ version }}</p>
+    <p>{{ 'ABOUT.DESCRIPTION' | translate }}</p>
+    <ion-card>
+      <ion-card-content>
+        <p><strong>{{ 'ABOUT.AUTHOR' | translate }}:</strong> {{ 'ABOUT.AUTHOR_NAME' | translate }}</p>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

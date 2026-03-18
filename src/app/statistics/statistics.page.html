@@ -1,0 +1,85 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/more"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ 'STATISTICS.TITLE' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list lines="full">
+    <ion-item>
+      <ion-label>{{ 'STATISTICS.PERIOD' | translate }}</ion-label>
+      <ion-select
+        [value]="period"
+        (ionChange)="period = $any($event).detail.value; onPeriodChange()"
+        interface="action-sheet"
+      >
+        <ion-select-option value="this_month">{{ 'STATISTICS.THIS_MONTH' | translate }}</ion-select-option>
+        <ion-select-option value="last_month">{{ 'STATISTICS.LAST_MONTH' | translate }}</ion-select-option>
+        <ion-select-option value="last_3_months">{{ 'STATISTICS.LAST_3_MONTHS' | translate }}</ion-select-option>
+        <ion-select-option value="this_year">{{ 'STATISTICS.THIS_YEAR' | translate }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
+  <div class="ion-padding ion-text-center" *ngIf="loading">
+    <ion-spinner></ion-spinner>
+    <p>{{ 'COMMON.LOADING' | translate }}</p>
+  </div>
+
+  <div class="ion-padding summary" *ngIf="!loading">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <h3>{{ 'STATISTICS.TOTAL_EXPENSE' | translate }}</h3>
+          <p class="total-amount expense-color">{{ formatMoney(totalExpense) }}</p>
+        </ion-col>
+        <ion-col>
+          <h3>{{ 'STATISTICS.TOTAL_INCOME' | translate }}</h3>
+          <p class="total-amount income-color">{{ formatMoney(totalIncome) }}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ion-list lines="full" *ngIf="!loading && sortedCategories.length > 0">
+    <ion-list-header>
+      <ion-label>{{ 'STATISTICS.EXPENSE_BY_CATEGORY' | translate }}</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let c of sortedCategories">
+      <ion-label>
+        <div class="stat-row">
+          <span class="stat-name">{{ getCategoryName(c) }}</span>
+          <span class="stat-amount">{{ formatMoney(getSpent(c.id)) }}</span>
+        </div>
+        <div class="stat-bar-bg">
+          <div
+            class="stat-bar"
+            [style.width.%]="getBarWidth(c.id)"
+            [style.background-color]="c.color || 'var(--ion-color-primary)'"
+          ></div>
+        </div>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list lines="full" *ngIf="!loading && sortedIncomeCategories.length > 0">
+    <ion-list-header>
+      <ion-label>{{ 'STATISTICS.INCOME_BY_CATEGORY' | translate }}</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let c of sortedIncomeCategories">
+      <ion-label>
+        <div class="stat-row">
+          <span class="stat-name">{{ getCategoryName(c) }}</span>
+          <span class="stat-amount income-color">{{ formatMoney(getIncome(c.id)) }}</span>
+        </div>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <div class="ion-padding no-data" *ngIf="!loading && totalExpense === 0 && totalIncome === 0">
+    <p>{{ 'STATISTICS.NO_DATA' | translate }}</p>
+  </div>
+</ion-content>

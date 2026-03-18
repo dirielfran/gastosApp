@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { DatabaseService } from '../core/database';
-import { AccountService, CategoryService, MovementService, ExploreRefreshService } from '../core/services';
-import type { Movement } from '../core/models/movement.model';
+import { AccountService, CategoryService, ExportService, MovementService, ExploreRefreshService } from '../core/services';
+import type { Movement, MovementType } from '../core/models/movement.model';
 import type { MovementFilters } from '../core/services/movement.service';
 import type { ViewWillEnter } from '@ionic/angular';
 
@@ -20,6 +20,14 @@ export class ExplorePage implements OnInit, OnDestroy, ViewWillEnter {
   categories: { id: number; nameKey: string | null; nameCustom: string | null }[] = [];
   filters: MovementFilters = {};
   loading = true;
+  showFilters = false;
+
+  filterType: MovementType | '' = '';
+  filterAccountId: number | null = null;
+  filterCategoryId: number | null = null;
+  filterDateFrom = '';
+  filterDateTo = '';
+
   private refreshSub?: Subscription;
 
   constructor(
@@ -30,7 +38,8 @@ export class ExplorePage implements OnInit, OnDestroy, ViewWillEnter {
     private translate: TranslateService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private exploreRefresh: ExploreRefreshService
+    private exploreRefresh: ExploreRefreshService,
+    private exportService: ExportService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -75,17 +84,49 @@ export class ExplorePage implements OnInit, OnDestroy, ViewWillEnter {
     (event.target as HTMLIonRefresherElement).complete();
   }
 
-  async applyFilters(f: Partial<MovementFilters>): Promise<void> {
-    this.filters = { ...this.filters, ...f };
-    await this.loadMovements();
+  onFilterChange(): void {
+    this.filters = {};
+    if (this.filterType) this.filters.type = this.filterType as MovementType;
+    if (this.filterAccountId != null) this.filters.accountId = this.filterAccountId;
+    if (this.filterCategoryId != null) this.filters.categoryId = this.filterCategoryId;
+    if (this.filterDateFrom) this.filters.dateFrom = this.filterDateFrom;
+    if (this.filterDateTo) this.filters.dateTo = this.filterDateTo;
+    this.loadMovements();
+  }
+
+  clearFilters(): void {
+    this.filterType = '';
+    this.filterAccountId = null;
+    this.filterCategoryId = null;
+    this.filterDateFrom = '';
+    this.filterDateTo = '';
+    this.filters = {};
+    this.loadMovements();
+  }
+
+  hasActiveFilters(): boolean {
+    return !!(this.filterType || this.filterAccountId != null || this.filterCategoryId != null || this.filterDateFrom || this.filterDateTo);
+  }
+
+  getAccountName(accountId: number): string {
+    const a = this.accounts.find((acc) => acc.id === accountId);
+    return a ? a.name : '—';
   }
 
   goToAddMovement(): void {
     this.router.navigate(['/movement', 'new']);
   }
 
+  goToTransfer(): void {
+    this.router.navigate(['/transfer']);
+  }
+
   goToEditMovement(id: number): void {
     this.router.navigate(['/movement', id]);
+  }
+
+  async exportCsv(): Promise<void> {
+    await this.exportService.exportMovementsCsv(this.filters);
   }
 
   getCategoryName(c: { nameKey: string | null; nameCustom: string | null }): string {

@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { DatabaseService } from '../core/database';
 import { AccountService } from '../core/services';
 import { formatCurrency } from '../core/utils';
@@ -22,7 +23,8 @@ export class AccountsPage implements OnInit, ViewWillEnter {
     private database: DatabaseService,
     private accountService: AccountService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private translate: TranslateService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -30,7 +32,7 @@ export class AccountsPage implements OnInit, ViewWillEnter {
       await this.database.init();
       await this.load();
     } catch (e) {
-      this.error = e instanceof Error ? e.message : 'Error al cargar cuentas';
+      this.error = e instanceof Error ? e.message : this.translate.instant('COMMON.ERROR');
       this.loading = false;
     }
     this.cdr.detectChanges();
@@ -53,7 +55,7 @@ export class AccountsPage implements OnInit, ViewWillEnter {
       }
       this.accounts = await this.accountService.getAll();
     } catch (e) {
-      this.error = e instanceof Error ? e.message : 'Error al cargar';
+      this.error = e instanceof Error ? e.message : this.translate.instant('COMMON.ERROR');
     } finally {
       this.loading = false;
       this.cdr.detectChanges();

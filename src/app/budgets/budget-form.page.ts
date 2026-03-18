@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { DatabaseService } from '../core/database';
 import { BudgetService, CategoryService } from '../core/services';
 import { TranslateService } from '@ngx-translate/core';
@@ -24,6 +25,7 @@ export class BudgetFormPage implements OnInit {
     private budgetService: BudgetService,
     private categoryService: CategoryService,
     private translate: TranslateService,
+    private alertCtrl: AlertController,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -74,6 +76,28 @@ export class BudgetFormPage implements OnInit {
     } finally {
       this.saving = false;
     }
+  }
+
+  async confirmDelete(): Promise<void> {
+    const alert = await this.alertCtrl.create({
+      header: this.translate.instant('COMMON.CONFIRM_DELETE_TITLE'),
+      message: this.translate.instant('COMMON.CONFIRM_DELETE_MSG'),
+      buttons: [
+        { text: this.translate.instant('COMMON.CANCEL'), role: 'cancel' },
+        {
+          text: this.translate.instant('COMMON.DELETE'),
+          role: 'destructive',
+          handler: () => this.doDelete(),
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  private async doDelete(): Promise<void> {
+    if (this.id == null) return;
+    await this.budgetService.delete(this.id);
+    this.router.navigate(['/budgets']);
   }
 
   cancel(): void {

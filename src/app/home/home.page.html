@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>App Gastos CCS</ion-title>
+    <ion-title>{{ 'APP.NAME' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -27,6 +27,6 @@
       </ion-card-content>
     </ion-card>
 
-    <p class="ion-text-secondary ion-margin-top">{{ 'HOME.NO_DATA' | translate }}</p>
+    <p class="ion-text-secondary ion-margin-top" *ngIf="!loading && income === 0 && expense === 0">{{ 'HOME.NO_DATA' | translate }}</p>
   </div>
 </ion-content>

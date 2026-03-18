@@ -60,9 +60,10 @@ export class BudgetService {
     if (!bud) return;
 
     await this.db.run(
-      `UPDATE budgets SET amount_limit = ?, period = ?, alert_threshold_percent = ?, is_active = ?, updated_at = ?
+      `UPDATE budgets SET category_id = ?, amount_limit = ?, period = ?, alert_threshold_percent = ?, is_active = ?, updated_at = ?
        WHERE id = ?`,
       [
+        data.categoryId ?? bud.categoryId,
         data.amountLimit ?? bud.amountLimit,
         data.period ?? bud.period,
         data.alertThresholdPercent ?? bud.alertThresholdPercent,
@@ -76,6 +77,31 @@ export class BudgetService {
 
   async delete(id: number): Promise<void> {
     await this.db.run('DELETE FROM budgets WHERE id = ?', [id], true);
+  }
+
+  /** Gasto e ingreso agrupado por categoría en un rango (una sola query, elimina N+1). */
+  async getSpentByAllCategories(
+    dateFrom: string,
+    dateTo: string
+  ): Promise<{ categoryId: number; expense: number; income: number }[]> {
+    const rows = await this.db.query<{ category_id: number; type: string; total: number }>(
+      `SELECT category_id, type, COALESCE(SUM(amount), 0) as total FROM movements
+       WHERE movement_date >= ? AND movement_date <= ?
+       GROUP BY category_id, type`,
+      [dateFrom, dateTo]
+    );
+    const map = new Map<number, { expense: number; income: number }>();
+    for (const r of rows) {
+      const catId = Number(r.category_id);
+      const entry = map.get(catId) ?? { expense: 0, income: 0 };
+      if (r.type === 'expense') entry.expense = Number(r.total);
+      else entry.income = Number(r.total);
+      map.set(catId, entry);
+    }
+    return Array.from(map.entries()).map(([categoryId, totals]) => ({
+      categoryId,
+      ...totals,
+    }));
   }
 
   /** Gasto total en una categoría en un rango de fechas (para comparar con presupuesto). */

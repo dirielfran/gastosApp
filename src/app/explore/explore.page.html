@@ -1,6 +1,20 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>{{ 'EXPLORE.TITLE' | translate }}</ion-title>
+    <ion-label slot="start" class="toolbar-title">{{ 'EXPLORE.TITLE' | translate }}</ion-label>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToTransfer()" [attr.aria-label]="'TRANSFER.TITLE' | translate">
+        <ion-icon slot="icon-only" name="swap-horizontal-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="goToAddMovement()" [attr.aria-label]="'MOVEMENT_FORM.NEW_TITLE' | translate">
+        <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="exportCsv()" [attr.aria-label]="'COMMON.EXPORT' | translate">
+        <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="showFilters = !showFilters" [attr.aria-label]="'EXPLORE.FILTERS' | translate">
+        <ion-icon slot="icon-only" [name]="showFilters ? 'close' : 'filter-outline'"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -8,6 +22,90 @@
   <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+
+  <!-- Filtros colapsables -->
+  <div class="filter-bar" *ngIf="showFilters">
+    <ion-list lines="none">
+      <ion-item>
+        <ion-label>{{ 'EXPLORE.FILTER_TYPE' | translate }}</ion-label>
+        <ion-select [(ngModel)]="filterType" (ionChange)="onFilterChange()" interface="popover">
+          <ion-select-option value="">{{ 'EXPLORE.ALL' | translate }}</ion-select-option>
+          <ion-select-option value="expense">{{ 'EXPLORE.EXPENSE' | translate }}</ion-select-option>
+          <ion-select-option value="income">{{ 'EXPLORE.INCOME' | translate }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{ 'EXPLORE.FILTER_ACCOUNT' | translate }}</ion-label>
+        <ion-select [(ngModel)]="filterAccountId" (ionChange)="onFilterChange()" interface="popover">
+          <ion-select-option [value]="null">{{ 'EXPLORE.ALL' | translate }}</ion-select-option>
+          <ion-select-option *ngFor="let a of accounts" [value]="a.id">{{ a.name }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>{{ 'EXPLORE.FILTER_CATEGORY' | translate }}</ion-label>
+        <ion-select [(ngModel)]="filterCategoryId" (ionChange)="onFilterChange()" interface="popover">
+          <ion-select-option [value]="null">{{ 'EXPLORE.ALL' | translate }}</ion-select-option>
+          <ion-select-option *ngFor="let c of categories" [value]="c.id">{{ getCategoryName(c) }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item button id="open-date-from">
+        <ion-label>{{ 'EXPLORE.FILTER_DATE_FROM' | translate }}</ion-label>
+        <ion-note slot="end">{{ filterDateFrom || '—' }}</ion-note>
+        <ion-popover trigger="open-date-from" [showBackdrop]="false">
+          <ng-template>
+            <ion-datetime
+              presentation="date"
+              [value]="filterDateFrom || undefined"
+              (ionChange)="filterDateFrom = $any($event).detail.value?.split('T')[0] ?? ''; onFilterChange()"
+            ></ion-datetime>
+          </ng-template>
+        </ion-popover>
+      </ion-item>
+      <ion-item button id="open-date-to">
+        <ion-label>{{ 'EXPLORE.FILTER_DATE_TO' | translate }}</ion-label>
+        <ion-note slot="end">{{ filterDateTo || '—' }}</ion-note>
+        <ion-popover trigger="open-date-to" [showBackdrop]="false">
+          <ng-template>
+            <ion-datetime
+              presentation="date"
+              [value]="filterDateTo || undefined"
+              (ionChange)="filterDateTo = $any($event).detail.value?.split('T')[0] ?? ''; onFilterChange()"
+            ></ion-datetime>
+          </ng-template>
+        </ion-popover>
+      </ion-item>
+    </ion-list>
+    <div class="ion-padding-horizontal ion-padding-bottom">
+      <ion-button expand="block" fill="clear" size="small" (click)="clearFilters()">
+        <ion-icon name="trash-outline" slot="start"></ion-icon>
+        {{ 'EXPLORE.CLEAR_FILTERS' | translate }}
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- Chips de filtros activos -->
+  <div class="filter-chips ion-padding-horizontal" *ngIf="hasActiveFilters()">
+    <ion-chip *ngIf="filterType" (click)="filterType = ''; onFilterChange()">
+      <ion-label>{{ filterType === 'expense' ? ('EXPLORE.EXPENSE' | translate) : ('EXPLORE.INCOME' | translate) }}</ion-label>
+      <ion-icon name="close-circle"></ion-icon>
+    </ion-chip>
+    <ion-chip *ngIf="filterAccountId != null" (click)="filterAccountId = null; onFilterChange()">
+      <ion-label>{{ getAccountName(filterAccountId) }}</ion-label>
+      <ion-icon name="close-circle"></ion-icon>
+    </ion-chip>
+    <ion-chip *ngIf="filterCategoryId != null" (click)="filterCategoryId = null; onFilterChange()">
+      <ion-label>{{ getCategoryNameById(filterCategoryId) }}</ion-label>
+      <ion-icon name="close-circle"></ion-icon>
+    </ion-chip>
+    <ion-chip *ngIf="filterDateFrom" (click)="filterDateFrom = ''; onFilterChange()">
+      <ion-label>{{ 'EXPLORE.FILTER_DATE_FROM' | translate }}: {{ filterDateFrom }}</ion-label>
+      <ion-icon name="close-circle"></ion-icon>
+    </ion-chip>
+    <ion-chip *ngIf="filterDateTo" (click)="filterDateTo = ''; onFilterChange()">
+      <ion-label>{{ 'EXPLORE.FILTER_DATE_TO' | translate }}: {{ filterDateTo }}</ion-label>
+      <ion-icon name="close-circle"></ion-icon>
+    </ion-chip>
+  </div>
 
   <div class="ion-padding ion-text-center" *ngIf="loading">
     <ion-spinner></ion-spinner>
@@ -31,9 +129,5 @@
     <ion-button expand="block" (click)="goToAddMovement()">{{ 'COMMON.ADD' | translate }}</ion-button>
   </div>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="goToAddMovement()">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+
 </ion-content>

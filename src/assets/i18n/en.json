@@ -22,7 +22,14 @@
     "FILTERS": "Filters",
     "NO_MOVEMENTS": "No movements match the selected filters.",
     "EXPENSE": "Expense",
-    "INCOME": "Income"
+    "INCOME": "Income",
+    "ALL": "All",
+    "FILTER_TYPE": "Type",
+    "FILTER_ACCOUNT": "Account",
+    "FILTER_CATEGORY": "Category",
+    "FILTER_DATE_FROM": "From",
+    "FILTER_DATE_TO": "To",
+    "CLEAR_FILTERS": "Clear filters"
   },
   "MORE": {
     "TITLE": "More",
@@ -30,7 +37,9 @@
     "SETTINGS": "Settings",
     "ACCOUNTS": "Accounts",
     "CATEGORIES": "Categories",
-    "BUDGETS": "Budgets"
+    "BUDGETS": "Budgets",
+    "ABOUT": "About",
+    "RECURRING": "Recurring"
   },
   "COMMON": {
     "SAVE": "Save",
@@ -44,7 +53,13 @@
     "NEXT": "Next",
     "LOADING": "Loading...",
     "ERROR": "Error",
-    "OK": "OK"
+    "OK": "OK",
+    "REQUIRED": "Required field",
+    "CONFIRM_DELETE_TITLE": "Confirm deletion",
+    "CONFIRM_DELETE_MSG": "Are you sure you want to delete this item? This action cannot be undone.",
+    "RETRY": "Retry",
+    "EXPORT": "Export",
+    "VERSION": "Version"
   },
   "SETTINGS": {
     "TITLE": "Settings",
@@ -56,8 +71,96 @@
     "CURRENCY": "Currency",
     "BUDGET_ALERTS": "Budget alerts"
   },
+  "BUDGET_ALERTS": {
+    "TOAST_MESSAGE": "Budget: you've reached {{percent}}% of the limit ({{limit}})"
+  },
+  "MOVEMENT_FORM": {
+    "NEW_TITLE": "New movement",
+    "EDIT_TITLE": "Edit movement",
+    "TYPE": "Type",
+    "ACCOUNT": "Account",
+    "CATEGORY": "Category",
+    "AMOUNT": "Amount",
+    "DATE": "Date",
+    "NOTE": "Note",
+    "NOTE_PLACEHOLDER": "Optional",
+    "AMOUNT_ERROR": "Amount must be greater than 0",
+    "NO_ACCOUNTS_MSG": "You need at least one account and one category to create a movement."
+  },
+  "ACCOUNT_FORM": {
+    "NEW_TITLE": "New account",
+    "EDIT_TITLE": "Edit account",
+    "NAME": "Name",
+    "NAME_PLACEHOLDER": "E.g. Cash, Bank",
+    "CURRENCY": "Currency"
+  },
+  "ACCOUNTS": {
+    "TITLE": "Accounts",
+    "LOADING": "Loading accounts...",
+    "NO_ACCOUNTS": "No accounts yet. Add one to get started."
+  },
   "CATEGORY_FORM": {
-    "ICON": "Icon"
+    "NEW_TITLE": "New category",
+    "EDIT_TITLE": "Edit category",
+    "NAME": "Name",
+    "NAME_PLACEHOLDER": "E.g. Groceries",
+    "ICON": "Icon",
+    "COLOR": "Color"
+  },
+  "CATEGORIES_PAGE": {
+    "NO_CATEGORIES": "No categories."
+  },
+  "BUDGET_FORM": {
+    "NEW_TITLE": "New budget",
+    "EDIT_TITLE": "Edit budget",
+    "CATEGORY": "Category",
+    "MONTHLY_LIMIT": "Monthly limit",
+    "ALERT_PERCENT": "Alert at %"
+  },
+  "BUDGETS": {
+    "SPENT": "Spent",
+    "LIMIT": "Limit",
+    "EXCEEDED": "Exceeded",
+    "NO_BUDGETS": "No budgets yet. Add one from here."
+  },
+  "STATISTICS": {
+    "TITLE": "Statistics",
+    "PERIOD": "Period",
+    "THIS_MONTH": "This month",
+    "LAST_MONTH": "Last month",
+    "TOTAL_EXPENSE": "Total expenses",
+    "EXPENSE_BY_CATEGORY": "Expense by category",
+    "INCOME_BY_CATEGORY": "Income by category",
+    "TOTAL_INCOME": "Total income",
+    "LAST_3_MONTHS": "Last 3 months",
+    "THIS_YEAR": "This year",
+    "NO_DATA": "No data in this period."
+  },
+  "TRANSFER": {
+    "TITLE": "Transfer",
+    "FROM": "From account",
+    "TO": "To account",
+    "EXECUTE": "Transfer",
+    "TAG": "Transfer",
+    "SUCCESS": "Transfer completed successfully",
+    "NEED_TWO_ACCOUNTS": "You need at least two accounts to make a transfer."
+  },
+  "RECURRING": {
+    "TITLE": "Recurring movements",
+    "NEW_TITLE": "New recurring",
+    "EDIT_TITLE": "Edit recurring",
+    "DAY": "Day of month",
+    "NO_ITEMS": "No recurring movements. Add one to automate monthly expenses or income.",
+    "TAG": "Recurring",
+    "FREQUENCY": "Frequency",
+    "MONTHLY": "Monthly",
+    "WEEKLY": "Weekly"
+  },
+  "ABOUT": {
+    "TITLE": "About",
+    "DESCRIPTION": "Application for tracking expenses, income and statistics.",
+    "AUTHOR": "Author",
+    "AUTHOR_NAME": "CCS Solutions"
   },
   "CATEGORIES": {
     "FOOD": "Food",

@@ -6,6 +6,11 @@
 
 <ion-content [fullscreen]="true">
   <div class="menu-list">
+    <ion-button expand="block" fill="clear" class="menu-row" (click)="goTo('statistics')">
+      <ion-icon name="stats-chart-outline" slot="start"></ion-icon>
+      {{ 'MORE.STATISTICS' | translate }}
+      <ion-icon name="chevron-forward" slot="end"></ion-icon>
+    </ion-button>
     <ion-button expand="block" fill="clear" class="menu-row" (click)="goTo('accounts')">
       <ion-icon name="wallet-outline" slot="start"></ion-icon>
       {{ 'MORE.ACCOUNTS' | translate }}
@@ -21,9 +26,19 @@
       {{ 'MORE.BUDGETS' | translate }}
       <ion-icon name="chevron-forward" slot="end"></ion-icon>
     </ion-button>
+    <ion-button expand="block" fill="clear" class="menu-row" (click)="goTo('recurring')">
+      <ion-icon name="repeat-outline" slot="start"></ion-icon>
+      {{ 'MORE.RECURRING' | translate }}
+      <ion-icon name="chevron-forward" slot="end"></ion-icon>
+    </ion-button>
     <ion-button expand="block" fill="clear" class="menu-row" (click)="goTo('settings')">
       <ion-icon name="settings-outline" slot="start"></ion-icon>
       {{ 'MORE.SETTINGS' | translate }}
+      <ion-icon name="chevron-forward" slot="end"></ion-icon>
+    </ion-button>
+    <ion-button expand="block" fill="clear" class="menu-row" (click)="goTo('about')">
+      <ion-icon name="information-circle-outline" slot="start"></ion-icon>
+      {{ 'MORE.ABOUT' | translate }}
       <ion-icon name="chevron-forward" slot="end"></ion-icon>
     </ion-button>
   </div>

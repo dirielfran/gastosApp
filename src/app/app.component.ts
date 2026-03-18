@@ -3,7 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { DatabaseService } from './core/database';
-import { ThemeService, ExploreRefreshService } from './core/services';
+import { ThemeService, ExploreRefreshService, RecurringService } from './core/services';
 import { TranslateService } from '@ngx-translate/core';
 import { SettingsService } from './core/services';
 
@@ -22,20 +22,24 @@ export class AppComponent implements OnInit, OnDestroy {
     private translate: TranslateService,
     private settings: SettingsService,
     private router: Router,
-    private exploreRefresh: ExploreRefreshService
+    private exploreRefresh: ExploreRefreshService,
+    private recurringService: RecurringService
   ) {}
 
   async ngOnInit(): Promise<void> {
     try {
       await this.database.init();
     } catch (err) {
-      console.error('No se pudo inicializar la base de datos:', err);
+      console.error('Database initialization error:', err);
     }
     await this.theme.init();
     const lang = await this.settings.getSetting(this.settings.keys.LANGUAGE, 'es');
     if (lang && ['es', 'en', 'pt'].includes(lang)) {
       this.translate.use(lang);
     }
+    this.recurringService.applyRecurringForCurrentMonth().catch((err) =>
+      console.error('Error applying recurring movements:', err)
+    );
     this.routerSub = this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
       .subscribe((e) => {

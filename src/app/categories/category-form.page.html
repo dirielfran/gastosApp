@@ -3,15 +3,15 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/categories"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ isNew ? 'Nueva categoría' : 'Editar categoría' }}</ion-title>
+    <ion-title>{{ isNew ? ('CATEGORY_FORM.NEW_TITLE' | translate) : ('CATEGORY_FORM.EDIT_TITLE' | translate) }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-list class="ion-padding">
     <ion-item>
-      <ion-label position="stacked">Nombre</ion-label>
-      <ion-input [(ngModel)]="nameCustom" type="text" placeholder="Ej. Supermercado"></ion-input>
+      <ion-label position="stacked">{{ 'CATEGORY_FORM.NAME' | translate }}</ion-label>
+      <ion-input [(ngModel)]="nameCustom" type="text" [placeholder]="'CATEGORY_FORM.NAME_PLACEHOLDER' | translate"></ion-input>
     </ion-item>
     <ion-item lines="none">
       <ion-label position="stacked">{{ 'CATEGORY_FORM.ICON' | translate }}</ion-label>
@@ -29,12 +29,13 @@
       </button>
     </div>
     <ion-item>
-      <ion-label position="stacked">Color</ion-label>
+      <ion-label position="stacked">{{ 'CATEGORY_FORM.COLOR' | translate }}</ion-label>
       <ion-input [(ngModel)]="color" type="color"></ion-input>
     </ion-item>
   </ion-list>
   <div class="ion-padding">
     <ion-button expand="block" (click)="save()">{{ 'COMMON.SAVE' | translate }}</ion-button>
     <ion-button expand="block" fill="outline" (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</ion-button>
+    <ion-button *ngIf="!isNew" expand="block" fill="outline" color="danger" (click)="confirmDelete()">{{ 'COMMON.DELETE' | translate }}</ion-button>
   </div>
 </ion-content>

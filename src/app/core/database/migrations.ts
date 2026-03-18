@@ -2,7 +2,7 @@
  * Versión actual del esquema de la base de datos.
  * Incrementar y añadir sentencias en MIGRATIONS al cambiar el esquema.
  */
-export const DB_VERSION = 2;
+export const DB_VERSION = 3;
 
 export const DB_NAME = 'app_gastos_ccs';
 
@@ -126,5 +126,25 @@ SELECT 'CATEGORIES.GIFTS', NULL, 1, 'gift', '#8E24AA', datetime('now'), datetime
 WHERE NOT EXISTS (SELECT 1 FROM categories WHERE name_key = 'CATEGORIES.GIFTS');
 
 INSERT OR IGNORE INTO schema_version (version) VALUES (2);
+`,
+  3: `
+-- Movimientos recurrentes (suscripciones, salario, etc.)
+CREATE TABLE IF NOT EXISTS recurring_movements (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account_id INTEGER NOT NULL,
+  category_id INTEGER NOT NULL,
+  type TEXT NOT NULL CHECK (type IN ('expense', 'income')),
+  amount REAL NOT NULL CHECK (amount >= 0),
+  note TEXT,
+  frequency TEXT NOT NULL DEFAULT 'monthly',
+  day_of_month INTEGER NOT NULL DEFAULT 1,
+  is_active INTEGER NOT NULL DEFAULT 1,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+  FOREIGN KEY (account_id) REFERENCES accounts(id),
+  FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+INSERT OR IGNORE INTO schema_version (version) VALUES (3);
 `,
 };

@@ -30,12 +30,15 @@ export class HomePage implements OnInit, ViewWillEnter {
   async ngOnInit(): Promise<void> {
     await this.database.init();
     this.locale = await this.settings.getSetting(this.settings.keys.LANGUAGE, 'es');
+    this.currencyCode = await this.settings.getSetting(this.settings.keys.DEFAULT_CURRENCY, 'EUR');
     await this.loadThisMonthBalance();
   }
 
-  ionViewWillEnter(): void {
+  async ionViewWillEnter(): Promise<void> {
     if (this.database.isOpen()) {
-      this.loadThisMonthBalance();
+      this.locale = await this.settings.getSetting(this.settings.keys.LANGUAGE, 'es');
+      this.currencyCode = await this.settings.getSetting(this.settings.keys.DEFAULT_CURRENCY, 'EUR');
+      await this.loadThisMonthBalance();
     }
   }
 

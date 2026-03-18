@@ -26,6 +26,14 @@
       </ion-select>
     </ion-item>
     <ion-list-header>
+      <ion-label>{{ 'SETTINGS.CURRENCY' | translate }}</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-select [(ngModel)]="currency" (ionChange)="onCurrencyChange()" interface="action-sheet">
+        <ion-select-option *ngFor="let c of currencies" [value]="c">{{ c }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-list-header>
       <ion-label>{{ 'SETTINGS.BUDGET_ALERTS' | translate }}</ion-label>
     </ion-list-header>
     <ion-item>

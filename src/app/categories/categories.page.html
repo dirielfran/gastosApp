@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>{{ 'MORE.CATEGORIES' | translate }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="goToNew()">
+      <ion-button (click)="goToNew()" [attr.aria-label]="'COMMON.ADD' | translate">
         <ion-icon name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -13,6 +13,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <div class="ion-padding ion-text-center" *ngIf="loading">
+    <ion-spinner></ion-spinner>
+    <p>{{ 'COMMON.LOADING' | translate }}</p>
+  </div>
   <ion-list lines="full" *ngIf="!loading && categories.length > 0">
     <ion-item *ngFor="let c of categories" button (click)="goToEdit(c.id)">
       <ion-icon [name]="c.icon || 'pricetag-outline'" slot="start" [style.color]="c.color || ''"></ion-icon>
@@ -21,7 +25,7 @@
     </ion-item>
   </ion-list>
   <div class="ion-padding" *ngIf="!loading && categories.length === 0">
-    <p>No hay categorías.</p>
+    <p>{{ 'CATEGORIES_PAGE.NO_CATEGORIES' | translate }}</p>
     <ion-button expand="block" (click)="goToNew()">{{ 'COMMON.ADD' | translate }}</ion-button>
   </div>
 </ion-content>

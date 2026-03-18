@@ -16,6 +16,8 @@ import type { ViewWillEnter } from '@ionic/angular';
 export class BudgetsPage implements OnInit, ViewWillEnter {
   budgets: Budget[] = [];
   categories: Category[] = [];
+  /** Gasto del mes actual por budget.id */
+  spentByBudgetId: Record<number, number> = {};
   loading = true;
 
   constructor(
@@ -39,12 +41,50 @@ export class BudgetsPage implements OnInit, ViewWillEnter {
 
   async load(): Promise<void> {
     this.loading = true;
+    this.spentByBudgetId = {};
     try {
       this.budgets = await this.budgetService.getAll();
       this.categories = await this.categoryService.getAll();
+      const { dateFrom, dateTo } = this.getCurrentMonthRange();
+      for (const b of this.budgets) {
+        this.spentByBudgetId[b.id] = await this.budgetService.getSpentInCategory(
+          b.categoryId,
+          dateFrom,
+          dateTo
+        );
+      }
     } finally {
       this.loading = false;
     }
+  }
+
+  private getCurrentMonthRange(): { dateFrom: string; dateTo: string } {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), now.getMonth(), 1);
+    const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    return {
+      dateFrom: start.toISOString().slice(0, 10),
+      dateTo: end.toISOString().slice(0, 10),
+    };
+  }
+
+  getSpent(b: Budget): number {
+    return this.spentByBudgetId[b.id] ?? 0;
+  }
+
+  /** Porcentaje gastado respecto al límite (puede ser > 100). */
+  getProgressPercent(b: Budget): number {
+    if (b.amountLimit <= 0) return 0;
+    return Math.min(100, (this.getSpent(b) / b.amountLimit) * 100);
+  }
+
+  /** 'success' | 'warning' | 'danger' para barra y estado. */
+  getProgressColor(b: Budget): 'success' | 'warning' | 'danger' {
+    const spent = this.getSpent(b);
+    if (spent >= b.amountLimit) return 'danger';
+    const threshold = (b.amountLimit * b.alertThresholdPercent) / 100;
+    if (spent >= threshold) return 'warning';
+    return 'success';
   }
 
   getCategoryName(categoryId: number): string {

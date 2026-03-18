@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/more"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ 'RECURRING.TITLE' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToNew()" [attr.aria-label]="'COMMON.ADD' | translate">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="ion-padding ion-text-center" *ngIf="loading">
+    <ion-spinner></ion-spinner>
+    <p>{{ 'COMMON.LOADING' | translate }}</p>
+  </div>
+  <ion-list lines="full" *ngIf="!loading && items.length > 0">
+    <ion-item *ngFor="let r of items" button (click)="goToEdit(r.id)">
+      <ion-label>
+        <h2>{{ getCategoryName(r.categoryId) }}</h2>
+        <p>{{ r.type === 'income' ? ('EXPLORE.INCOME' | translate) : ('EXPLORE.EXPENSE' | translate) }} · {{ 'RECURRING.DAY' | translate }}: {{ r.dayOfMonth }}</p>
+      </ion-label>
+      <ion-note slot="end" [color]="r.type === 'income' ? 'success' : 'danger'">
+        {{ r.amount | number:'1.2-2' }}
+      </ion-note>
+    </ion-item>
+  </ion-list>
+  <div class="ion-padding" *ngIf="!loading && items.length === 0">
+    <p>{{ 'RECURRING.NO_ITEMS' | translate }}</p>
+    <ion-button expand="block" (click)="goToNew()">{{ 'COMMON.ADD' | translate }}</ion-button>
+  </div>
+</ion-content>

@@ -1,1 +1,15 @@
 // Explore page styles
+.toolbar-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-left: 30px;
+}
+.filter-bar {
+  border-bottom: 1px solid var(--ion-color-light-shade);
+}
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding-top: 8px;
+}

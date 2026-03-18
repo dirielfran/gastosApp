@@ -3,9 +3,9 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/more"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ 'MORE.ACCOUNTS' | translate }}</ion-title>
+    <ion-title>{{ 'ACCOUNTS.TITLE' | translate }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="goToNew()">
+      <ion-button (click)="goToNew()" [attr.aria-label]="'COMMON.ADD' | translate">
         <ion-icon name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -13,17 +13,14 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <!-- Siempre visible: título de sección -->
-  <h2 class="ion-margin-bottom">Cuentas</h2>
-
   <div *ngIf="loading" class="ion-padding">
     <ion-spinner name="crescent"></ion-spinner>
-    <p>Cargando cuentas...</p>
+    <p>{{ 'ACCOUNTS.LOADING' | translate }}</p>
   </div>
 
   <div *ngIf="error" class="ion-padding">
     <p class="ion-text-color-danger">{{ error }}</p>
-    <ion-button expand="block" (click)="load()">Reintentar</ion-button>
+    <ion-button expand="block" (click)="load()">{{ 'COMMON.RETRY' | translate }}</ion-button>
   </div>
 
   <ion-list lines="full" *ngIf="!loading && !error && accounts.length > 0">
@@ -37,7 +34,7 @@
   </ion-list>
 
   <div *ngIf="!loading && !error && accounts.length === 0" class="ion-padding">
-    <p>No hay cuentas. Añade una para empezar.</p>
-    <ion-button expand="block" (click)="goToNew()">Añadir</ion-button>
+    <p>{{ 'ACCOUNTS.NO_ACCOUNTS' | translate }}</p>
+    <ion-button expand="block" (click)="goToNew()">{{ 'COMMON.ADD' | translate }}</ion-button>
   </div>
 </ion-content>

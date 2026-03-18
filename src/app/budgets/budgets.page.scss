@@ -1,1 +1,10 @@
 // Budgets page
+.budget-progress {
+  margin-top: 6px;
+  height: 6px;
+  border-radius: 3px;
+}
+.exceeded {
+  color: var(--ion-color-danger);
+  font-weight: 600;
+}

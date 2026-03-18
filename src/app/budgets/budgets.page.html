@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>{{ 'MORE.BUDGETS' | translate }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="goToNew()">
+      <ion-button (click)="goToNew()" [attr.aria-label]="'COMMON.ADD' | translate">
         <ion-icon name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -13,17 +13,30 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <div class="ion-padding ion-text-center" *ngIf="loading">
+    <ion-spinner></ion-spinner>
+    <p>{{ 'COMMON.LOADING' | translate }}</p>
+  </div>
   <ion-list lines="full" *ngIf="!loading && budgets.length > 0">
     <ion-item *ngFor="let b of budgets" button (click)="goToEdit(b.id)">
       <ion-label>
         <h2>{{ getCategoryName(b.categoryId) }}</h2>
-        <p>Límite: {{ b.amountLimit | number:'1.2-2' }} · Aviso al {{ b.alertThresholdPercent }}%</p>
+        <p>
+          {{ 'BUDGETS.SPENT' | translate }}: {{ getSpent(b) | number:'1.2-2' }} /
+          {{ 'BUDGETS.LIMIT' | translate }}: {{ b.amountLimit | number:'1.2-2' }}
+          <span *ngIf="getSpent(b) >= b.amountLimit" class="exceeded"> · {{ 'BUDGETS.EXCEEDED' | translate }}</span>
+        </p>
+        <ion-progress-bar
+          [value]="getProgressPercent(b) / 100"
+          [color]="getProgressColor(b)"
+          class="budget-progress"
+        ></ion-progress-bar>
       </ion-label>
       <ion-icon name="chevron-forward" slot="end"></ion-icon>
     </ion-item>
   </ion-list>
   <div class="ion-padding" *ngIf="!loading && budgets.length === 0">
-    <p>No hay presupuestos. Añade uno desde Configuración o aquí.</p>
+    <p>{{ 'BUDGETS.NO_BUDGETS' | translate }}</p>
     <ion-button expand="block" (click)="goToNew()">{{ 'COMMON.ADD' | translate }}</ion-button>
   </div>
 </ion-content>

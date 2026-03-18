@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { DatabaseService } from '../core/database';
-import { AccountService, CategoryService, MovementService } from '../core/services';
+import { AccountService, BudgetAlertService, CategoryService, MovementService } from '../core/services';
 import { TranslateService } from '@ngx-translate/core';
 import type { MovementType } from '../core/models/movement.model';
 import type { Account } from '../core/models/account.model';
@@ -30,7 +31,9 @@ export class MovementPage implements OnInit {
     private movementService: MovementService,
     private accountService: AccountService,
     private categoryService: CategoryService,
+    private budgetAlertService: BudgetAlertService,
     private translate: TranslateService,
+    private alertCtrl: AlertController,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -93,13 +96,35 @@ export class MovementPage implements OnInit {
           photoUri: null,
         });
       }
+      if (this.type === 'expense' && this.categoryId != null) {
+        await this.budgetAlertService.checkAlertsAfterMovement(
+          this.categoryId,
+          this.movementDate
+        );
+      }
       this.router.navigate(['/tabs/explore']);
     } finally {
       this.saving = false;
     }
   }
 
-  async delete(): Promise<void> {
+  async confirmDelete(): Promise<void> {
+    const alert = await this.alertCtrl.create({
+      header: this.translate.instant('COMMON.CONFIRM_DELETE_TITLE'),
+      message: this.translate.instant('COMMON.CONFIRM_DELETE_MSG'),
+      buttons: [
+        { text: this.translate.instant('COMMON.CANCEL'), role: 'cancel' },
+        {
+          text: this.translate.instant('COMMON.DELETE'),
+          role: 'destructive',
+          handler: () => this.doDelete(),
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  private async doDelete(): Promise<void> {
     if (this.id == null) return;
     await this.movementService.delete(this.id);
     this.router.navigate(['/tabs/explore']);

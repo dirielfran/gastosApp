@@ -3,24 +3,24 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/budgets"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ id == null ? 'Nuevo presupuesto' : 'Editar presupuesto' }}</ion-title>
+    <ion-title>{{ id == null ? ('BUDGET_FORM.NEW_TITLE' | translate) : ('BUDGET_FORM.EDIT_TITLE' | translate) }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-list class="ion-padding">
     <ion-item>
-      <ion-label position="stacked">Categoría</ion-label>
+      <ion-label position="stacked">{{ 'BUDGET_FORM.CATEGORY' | translate }}</ion-label>
       <ion-select [(ngModel)]="categoryId" interface="action-sheet">
         <ion-select-option *ngFor="let c of categories" [value]="c.id">{{ getCategoryName(c) }}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">Límite mensual</ion-label>
+      <ion-label position="stacked">{{ 'BUDGET_FORM.MONTHLY_LIMIT' | translate }}</ion-label>
       <ion-input [(ngModel)]="amountLimit" type="number" min="0" step="0.01"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">Aviso al %</ion-label>
+      <ion-label position="stacked">{{ 'BUDGET_FORM.ALERT_PERCENT' | translate }}</ion-label>
       <ion-range [(ngModel)]="alertThresholdPercent" min="1" max="100" step="5" snaps="true"></ion-range>
       <ion-note slot="end">{{ alertThresholdPercent }}%</ion-note>
     </ion-item>
@@ -30,5 +30,6 @@
       {{ 'COMMON.SAVE' | translate }}
     </ion-button>
     <ion-button expand="block" fill="outline" (click)="cancel()">{{ 'COMMON.CANCEL' | translate }}</ion-button>
+    <ion-button *ngIf="id != null" expand="block" fill="outline" color="danger" (click)="confirmDelete()">{{ 'COMMON.DELETE' | translate }}</ion-button>
   </div>
 </ion-content>
