@@ -2,7 +2,7 @@
  * Versión actual del esquema de la base de datos.
  * Incrementar y añadir sentencias en MIGRATIONS al cambiar el esquema.
  */
-export const DB_VERSION = 3;
+export const DB_VERSION = 4;
 
 export const DB_NAME = 'app_gastos_ccs';
 
@@ -146,5 +146,12 @@ CREATE TABLE IF NOT EXISTS recurring_movements (
 );
 
 INSERT OR IGNORE INTO schema_version (version) VALUES (3);
+`,
+  4: `
+-- Añadir icono y color a cuentas
+ALTER TABLE accounts ADD COLUMN icon TEXT;
+ALTER TABLE accounts ADD COLUMN color TEXT;
+
+INSERT OR IGNORE INTO schema_version (version) VALUES (4);
 `,
 };

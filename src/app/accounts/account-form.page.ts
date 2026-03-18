@@ -8,6 +8,12 @@ import type { AccountCreate } from '../core/models/account.model';
 
 const CURRENCIES = ['EUR', 'USD', 'GBP', 'COP', 'BRL', 'MXN', 'ARS', 'CLP'];
 
+const ACCOUNT_ICONS = [
+  'wallet-outline', 'card-outline', 'cash-outline', 'business-outline',
+  'home-outline', 'briefcase-outline', 'piggy-bank-outline', 'diamond-outline',
+  'globe-outline', 'phone-portrait-outline', 'laptop-outline', 'car-outline',
+];
+
 @Component({
   selector: 'app-account-form',
   templateUrl: './account-form.page.html',
@@ -18,7 +24,10 @@ export class AccountFormPage implements OnInit {
   id: number | null = null;
   name = '';
   currencyCode = 'EUR';
+  icon = 'wallet-outline';
+  color = '#1976D2';
   currencies = CURRENCIES;
+  readonly iconOptions = ACCOUNT_ICONS;
   saving = false;
 
   constructor(
@@ -39,6 +48,8 @@ export class AccountFormPage implements OnInit {
       if (acc) {
         this.name = acc.name;
         this.currencyCode = acc.currencyCode;
+        this.icon = acc.icon ?? 'wallet-outline';
+        this.color = acc.color ?? '#1976D2';
       }
     }
   }
@@ -51,11 +62,15 @@ export class AccountFormPage implements OnInit {
         await this.accountService.update(this.id, {
           name: this.name.trim(),
           currencyCode: this.currencyCode,
+          icon: this.icon,
+          color: this.color,
         });
       } else {
         await this.accountService.create({
           name: this.name.trim(),
           currencyCode: this.currencyCode,
+          icon: this.icon,
+          color: this.color,
           isActive: 1,
         });
       }

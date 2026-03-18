@@ -12,20 +12,87 @@
   </ion-header>
 
   <div class="ion-padding">
+    <!-- Balance del mes -->
     <ion-card>
       <ion-card-header>
         <ion-card-subtitle>{{ 'HOME.THIS_MONTH' | translate }}</ion-card-subtitle>
         <ion-card-title>{{ 'HOME.BALANCE' | translate }}</ion-card-title>
       </ion-card-header>
       <ion-card-content *ngIf="!loading">
-        <p><strong>{{ 'HOME.TOTAL_INCOME' | translate }}:</strong> {{ formatMoney(income) }}</p>
-        <p><strong>{{ 'HOME.TOTAL_EXPENSE' | translate }}:</strong> {{ formatMoney(expense) }}</p>
-        <p><strong>{{ 'HOME.BALANCE' | translate }}:</strong> {{ formatMoney(balance) }}</p>
+        <ion-grid>
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <p class="label-small">{{ 'HOME.TOTAL_INCOME' | translate }}</p>
+              <p class="amount-income">{{ formatMoney(income) }}</p>
+            </ion-col>
+            <ion-col class="ion-text-center">
+              <p class="label-small">{{ 'HOME.TOTAL_EXPENSE' | translate }}</p>
+              <p class="amount-expense">{{ formatMoney(expense) }}</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <p class="balance-amount" [class.positive]="balance >= 0" [class.negative]="balance < 0">{{ formatMoney(balance) }}</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-card-content>
       <ion-card-content *ngIf="loading">
-        <ion-spinner></ion-spinner>
+        <div class="ion-text-center"><ion-spinner></ion-spinner></div>
       </ion-card-content>
     </ion-card>
+
+    <!-- Acciones rápidas -->
+    <div class="quick-actions" *ngIf="!loading">
+      <ion-button expand="block" (click)="goToAddMovement()">
+        <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+        {{ 'HOME.QUICK_ADD' | translate }}
+      </ion-button>
+      <ion-button expand="block" fill="outline" (click)="goToTransfer()">
+        <ion-icon name="swap-horizontal-outline" slot="start"></ion-icon>
+        {{ 'HOME.QUICK_TRANSFER' | translate }}
+      </ion-button>
+    </div>
+
+    <!-- Cuentas -->
+    <div *ngIf="!loading && accounts.length > 0">
+      <h3 class="section-title">{{ 'HOME.ACCOUNTS' | translate }}</h3>
+      <ion-card *ngFor="let a of accounts" class="account-card">
+        <ion-card-content>
+          <div class="account-row">
+            <ion-icon [name]="a.icon || 'wallet-outline'" class="account-icon" [style.color]="a.color || ''"></ion-icon>
+            <span class="account-name">{{ a.name }}</span>
+            <span class="account-balance">{{ formatAccountMoney(a.balance, a.currencyCode) }}</span>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Presupuestos en alerta -->
+    <div *ngIf="!loading && budgetAlerts.length > 0">
+      <h3 class="section-title">{{ 'HOME.BUDGET_WARNINGS' | translate }}</h3>
+      <ion-card *ngFor="let b of budgetAlerts" class="budget-alert-card" [color]="b.percent >= 100 ? 'danger' : 'warning'">
+        <ion-card-content>
+          <strong>{{ b.name }}</strong> — {{ b.percent }}%
+          <p>{{ formatMoney(b.spent) }} / {{ formatMoney(b.limit) }}</p>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Últimos movimientos -->
+    <div *ngIf="!loading && recentMovements.length > 0">
+      <h3 class="section-title">{{ 'HOME.RECENT_MOVEMENTS' | translate }}</h3>
+      <ion-list lines="full">
+        <ion-item *ngFor="let m of recentMovements" button (click)="goToMovement(m.id)">
+          <ion-label>
+            <p>{{ m.movementDate }}</p>
+          </ion-label>
+          <ion-note slot="end" [color]="m.type === 'income' ? 'success' : 'danger'">
+            {{ m.type === 'income' ? '+' : '-' }}{{ m.amount | number:'1.2-2' }}
+          </ion-note>
+        </ion-item>
+      </ion-list>
+    </div>
 
     <p class="ion-text-secondary ion-margin-top" *ngIf="!loading && income === 0 && expense === 0">{{ 'HOME.NO_DATA' | translate }}</p>
   </div>

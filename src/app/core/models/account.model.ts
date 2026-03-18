@@ -8,9 +8,11 @@ export interface Account {
   currencyCode: string;
   /** Balance cacheado opcional (se puede recalcular desde movimientos). */
   balance?: number;
+  icon: string | null;
+  color: string | null;
   createdAt: string;
   updatedAt: string;
-  isActive: number; // 1 = activa, 0 = inactiva
+  isActive: number;
 }
 
 export type AccountCreate = Omit<Account, 'id' | 'createdAt' | 'updatedAt'> & {

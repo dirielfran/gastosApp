@@ -49,10 +49,7 @@ export class AccountsPage implements OnInit, ViewWillEnter {
     this.error = null;
     this.cdr.detectChanges();
     try {
-      this.accounts = await this.accountService.getAll();
-      for (const a of this.accounts) {
-        await this.accountService.recalculateBalance(a.id);
-      }
+      await this.accountService.recalculateAllBalances();
       this.accounts = await this.accountService.getAll();
     } catch (e) {
       this.error = e instanceof Error ? e.message : this.translate.instant('COMMON.ERROR');

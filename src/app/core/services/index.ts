@@ -1,4 +1,5 @@
 export { AccountService } from './account.service';
+export { BackupService } from './backup.service';
 export { BudgetAlertService } from './budget-alert.service';
 export { ExportService } from './export.service';
 export { BudgetService } from './budget.service';

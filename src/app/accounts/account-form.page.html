@@ -19,6 +19,26 @@
         <ion-select-option *ngFor="let c of currencies" [value]="c">{{ c }}</ion-select-option>
       </ion-select>
     </ion-item>
+    <ion-item lines="none">
+      <ion-label position="stacked">{{ 'CATEGORY_FORM.ICON' | translate }}</ion-label>
+    </ion-item>
+    <div class="icon-grid">
+      <button
+        *ngFor="let opt of iconOptions"
+        type="button"
+        class="icon-option"
+        [class.selected]="icon === opt"
+        [style.color]="icon === opt ? color : ''"
+        [attr.aria-label]="opt"
+        (click)="icon = opt"
+      >
+        <ion-icon [name]="opt"></ion-icon>
+      </button>
+    </div>
+    <ion-item>
+      <ion-label position="stacked">{{ 'CATEGORY_FORM.COLOR' | translate }}</ion-label>
+      <ion-input [(ngModel)]="color" type="color"></ion-input>
+    </ion-item>
   </ion-list>
   <div class="ion-padding">
     <ion-button expand="block" (click)="save()" [disabled]="saving || !name.trim()">

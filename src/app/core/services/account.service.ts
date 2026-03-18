@@ -28,12 +28,14 @@ export class AccountService {
   async create(data: AccountCreate): Promise<Account> {
     const now = new Date().toISOString();
     const { lastId } = await this.db.run(
-      `INSERT INTO accounts (name, currency_code, balance, created_at, updated_at, is_active)
-       VALUES (?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO accounts (name, currency_code, balance, icon, color, created_at, updated_at, is_active)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         data.name,
         data.currencyCode,
         data.balance ?? 0,
+        data.icon ?? 'wallet-outline',
+        data.color ?? '#1976D2',
         now,
         now,
         data.isActive ?? 1,
@@ -51,12 +53,14 @@ export class AccountService {
     if (!acc) return;
 
     await this.db.run(
-      `UPDATE accounts SET name = ?, currency_code = ?, balance = ?, updated_at = ?, is_active = ?
+      `UPDATE accounts SET name = ?, currency_code = ?, balance = ?, icon = ?, color = ?, updated_at = ?, is_active = ?
        WHERE id = ?`,
       [
         data.name ?? acc.name,
         data.currencyCode ?? acc.currencyCode,
         data.balance ?? acc.balance ?? 0,
+        data.icon ?? acc.icon ?? 'wallet-outline',
+        data.color ?? acc.color ?? '#1976D2',
         now,
         data.isActive ?? acc.isActive,
         id,
@@ -72,6 +76,26 @@ export class AccountService {
   /** Marca la cuenta como inactiva en lugar de borrarla. */
   async deactivate(id: number): Promise<void> {
     await this.update(id, { isActive: 0 });
+  }
+
+  /** Recalcula el balance de TODAS las cuentas en una sola query + updates. */
+  async recalculateAllBalances(): Promise<void> {
+    const rows = await this.db.query<{ account_id: number; total: number }>(
+      `SELECT account_id, COALESCE(SUM(CASE WHEN type = 'income' THEN amount ELSE -amount END), 0) as total
+       FROM movements GROUP BY account_id`,
+      []
+    );
+    const balanceMap = new Map(rows.map((r) => [Number(r.account_id), Number(r.total)]));
+    const accounts = await this.getAll(false);
+    const now = new Date().toISOString();
+    for (const acc of accounts) {
+      const bal = balanceMap.get(acc.id) ?? 0;
+      await this.db.run(
+        'UPDATE accounts SET balance = ?, updated_at = ? WHERE id = ?',
+        [bal, now, acc.id],
+        true
+      );
+    }
   }
 
   /** Recalcula y actualiza el balance de una cuenta desde movimientos. */

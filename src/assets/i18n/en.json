@@ -14,7 +14,12 @@
     "TOTAL_INCOME": "Income",
     "TOTAL_EXPENSE": "Expenses",
     "THIS_MONTH": "This month",
-    "NO_DATA": "No movements yet. Add expenses or income from Explore."
+    "NO_DATA": "No movements yet. Add expenses or income from Explore.",
+    "QUICK_ADD": "New movement",
+    "QUICK_TRANSFER": "Transfer",
+    "ACCOUNTS": "My accounts",
+    "BUDGET_WARNINGS": "Budget warnings",
+    "RECENT_MOVEMENTS": "Recent movements"
   },
   "EXPLORE": {
     "TITLE": "Explore",
@@ -29,7 +34,8 @@
     "FILTER_CATEGORY": "Category",
     "FILTER_DATE_FROM": "From",
     "FILTER_DATE_TO": "To",
-    "CLEAR_FILTERS": "Clear filters"
+    "CLEAR_FILTERS": "Clear filters",
+    "SEARCH_PLACEHOLDER": "Search by note or amount..."
   },
   "MORE": {
     "TITLE": "More",
@@ -39,7 +45,9 @@
     "CATEGORIES": "Categories",
     "BUDGETS": "Budgets",
     "ABOUT": "About",
-    "RECURRING": "Recurring"
+    "RECURRING": "Recurring",
+    "TRANSFER": "Transfer",
+    "EXPORT": "Export data"
   },
   "COMMON": {
     "SAVE": "Save",
@@ -69,7 +77,12 @@
     "THEME_DARK": "Dark",
     "THEME_SYSTEM": "System",
     "CURRENCY": "Currency",
-    "BUDGET_ALERTS": "Budget alerts"
+    "BUDGET_ALERTS": "Budget alerts",
+    "DATA": "Data",
+    "EXPORT_BACKUP": "Export backup (JSON)",
+    "IMPORT_BACKUP": "Import backup",
+    "BACKUP_EXPORTED": "Backup exported successfully",
+    "BACKUP_IMPORTED": "Backup imported successfully"
   },
   "BUDGET_ALERTS": {
     "TOAST_MESSAGE": "Budget: you've reached {{percent}}% of the limit ({{limit}})"
@@ -161,6 +174,15 @@
     "DESCRIPTION": "Application for tracking expenses, income and statistics.",
     "AUTHOR": "Author",
     "AUTHOR_NAME": "CCS Solutions"
+  },
+  "ONBOARDING": {
+    "SLIDE1_TITLE": "Control your finances",
+    "SLIDE1_DESC": "Track expenses and income easily from your phone.",
+    "SLIDE2_TITLE": "Clear statistics",
+    "SLIDE2_DESC": "Visualize your spending by category and period with charts.",
+    "SLIDE3_TITLE": "Smart budgets",
+    "SLIDE3_DESC": "Set limits and get alerts before you overspend.",
+    "START": "Get started"
   },
   "CATEGORIES": {
     "FOOD": "Food",

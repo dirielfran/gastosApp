@@ -23,6 +23,13 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+  <ion-searchbar
+    [(ngModel)]="searchText"
+    (ionInput)="onSearchChange()"
+    [placeholder]="'EXPLORE.SEARCH_PLACEHOLDER' | translate"
+    [debounce]="300"
+  ></ion-searchbar>
+
   <!-- Filtros colapsables -->
   <div class="filter-bar" *ngIf="showFilters">
     <ion-list lines="none">
@@ -117,6 +124,7 @@
       <ion-label>
         <h2>{{ getCategoryNameById(m.categoryId) }}</h2>
         <p>{{ m.movementDate }} · {{ m.type === 'income' ? ('EXPLORE.INCOME' | translate) : ('EXPLORE.EXPENSE' | translate) }}</p>
+        <p class="note-text" *ngIf="m.note">{{ m.note }}</p>
       </ion-label>
       <ion-note slot="end" [color]="m.type === 'income' ? 'success' : 'danger'">
         {{ m.type === 'income' ? '+' : '-' }}{{ m.amount | number:'1.2-2' }}

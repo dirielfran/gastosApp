@@ -31,6 +31,16 @@
       {{ 'MORE.RECURRING' | translate }}
       <ion-icon name="chevron-forward" slot="end"></ion-icon>
     </ion-button>
+    <ion-button expand="block" fill="clear" class="menu-row" (click)="goTo('transfer')">
+      <ion-icon name="swap-horizontal-outline" slot="start"></ion-icon>
+      {{ 'MORE.TRANSFER' | translate }}
+      <ion-icon name="chevron-forward" slot="end"></ion-icon>
+    </ion-button>
+    <ion-button expand="block" fill="clear" class="menu-row" (click)="exportData()">
+      <ion-icon name="download-outline" slot="start"></ion-icon>
+      {{ 'MORE.EXPORT' | translate }}
+      <ion-icon name="chevron-forward" slot="end"></ion-icon>
+    </ion-button>
     <ion-button expand="block" fill="clear" class="menu-row" (click)="goTo('settings')">
       <ion-icon name="settings-outline" slot="start"></ion-icon>
       {{ 'MORE.SETTINGS' | translate }}

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { SettingsService, ThemeService } from '../core/services';
+import { ToastController } from '@ionic/angular';
+import { SettingsService, ThemeService, BackupService } from '../core/services';
 import { TranslateService } from '@ngx-translate/core';
 import type { ThemeMode } from '../core/models/settings.model';
 
@@ -29,10 +30,14 @@ export class SettingsPage implements OnInit {
     { value: 'system', label: 'SETTINGS.THEME_SYSTEM' },
   ];
 
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
   constructor(
     private settings: SettingsService,
     private themeService: ThemeService,
+    private backupService: BackupService,
     private translate: TranslateService,
+    private toastCtrl: ToastController,
     private router: Router
   ) {}
 
@@ -62,6 +67,43 @@ export class SettingsPage implements OnInit {
       this.settings.keys.BUDGET_ALERTS_ENABLED,
       this.budgetAlertsEnabled ? 'true' : 'false'
     );
+  }
+
+  async exportBackup(): Promise<void> {
+    await this.backupService.exportBackup();
+    const toast = await this.toastCtrl.create({
+      message: this.translate.instant('SETTINGS.BACKUP_EXPORTED'),
+      duration: 2000,
+      color: 'success',
+    });
+    await toast.present();
+  }
+
+  triggerImport(): void {
+    this.fileInput?.nativeElement?.click();
+  }
+
+  async onFileSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+    try {
+      await this.backupService.importBackup(file);
+      const toast = await this.toastCtrl.create({
+        message: this.translate.instant('SETTINGS.BACKUP_IMPORTED'),
+        duration: 2000,
+        color: 'success',
+      });
+      await toast.present();
+    } catch {
+      const toast = await this.toastCtrl.create({
+        message: this.translate.instant('COMMON.ERROR'),
+        duration: 2000,
+        color: 'danger',
+      });
+      await toast.present();
+    }
+    input.value = '';
   }
 
   goBack(): void {

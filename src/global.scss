@@ -45,3 +45,18 @@ ion-tabs ion-router-outlet {
 .ion-page-hidden {
   pointer-events: none !important;
 }
+
+/* Accesibilidad: focus-visible para navegación por teclado */
+*:focus-visible {
+  outline: 2px solid var(--ion-color-primary);
+  outline-offset: 2px;
+}
+
+/* Safe-area para dispositivos con notch */
+ion-content {
+  --padding-top: env(safe-area-inset-top);
+  --padding-bottom: env(safe-area-inset-bottom);
+}
+ion-tab-bar {
+  padding-bottom: env(safe-area-inset-bottom);
+}

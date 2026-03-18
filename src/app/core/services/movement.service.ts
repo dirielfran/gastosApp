@@ -7,8 +7,9 @@ export interface MovementFilters {
   accountId?: number;
   categoryId?: number;
   type?: MovementType;
-  dateFrom?: string; // YYYY-MM-DD
-  dateTo?: string;   // YYYY-MM-DD
+  dateFrom?: string;
+  dateTo?: string;
+  searchText?: string;
 }
 
 @Injectable({
@@ -40,6 +41,11 @@ export class MovementService {
     if (filters.dateTo) {
       conditions.push('movement_date <= ?');
       values.push(filters.dateTo);
+    }
+    if (filters.searchText) {
+      conditions.push('(note LIKE ? OR CAST(amount AS TEXT) LIKE ?)');
+      const term = `%${filters.searchText}%`;
+      values.push(term, term);
     }
 
     const where = conditions.length > 0 ? 'WHERE ' + conditions.join(' AND ') : '';

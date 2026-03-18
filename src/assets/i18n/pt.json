@@ -14,7 +14,12 @@
     "TOTAL_INCOME": "Receitas",
     "TOTAL_EXPENSE": "Despesas",
     "THIS_MONTH": "Este mês",
-    "NO_DATA": "Ainda não há movimentos. Adicione despesas ou receitas em Explorar."
+    "NO_DATA": "Ainda não há movimentos. Adicione despesas ou receitas em Explorar.",
+    "QUICK_ADD": "Novo movimento",
+    "QUICK_TRANSFER": "Transferir",
+    "ACCOUNTS": "Minhas contas",
+    "BUDGET_WARNINGS": "Orçamentos em alerta",
+    "RECENT_MOVEMENTS": "Movimentos recentes"
   },
   "EXPLORE": {
     "TITLE": "Explorar",
@@ -29,7 +34,8 @@
     "FILTER_CATEGORY": "Categoria",
     "FILTER_DATE_FROM": "De",
     "FILTER_DATE_TO": "Até",
-    "CLEAR_FILTERS": "Limpar filtros"
+    "CLEAR_FILTERS": "Limpar filtros",
+    "SEARCH_PLACEHOLDER": "Buscar por nota ou valor..."
   },
   "MORE": {
     "TITLE": "Mais",
@@ -39,7 +45,9 @@
     "CATEGORIES": "Categorias",
     "BUDGETS": "Orçamentos",
     "ABOUT": "Sobre",
-    "RECURRING": "Recorrentes"
+    "RECURRING": "Recorrentes",
+    "TRANSFER": "Transferência",
+    "EXPORT": "Exportar dados"
   },
   "COMMON": {
     "SAVE": "Guardar",
@@ -69,7 +77,12 @@
     "THEME_DARK": "Escuro",
     "THEME_SYSTEM": "Sistema",
     "CURRENCY": "Moeda",
-    "BUDGET_ALERTS": "Alertas de orçamento"
+    "BUDGET_ALERTS": "Alertas de orçamento",
+    "DATA": "Dados",
+    "EXPORT_BACKUP": "Exportar backup (JSON)",
+    "IMPORT_BACKUP": "Importar backup",
+    "BACKUP_EXPORTED": "Backup exportado com sucesso",
+    "BACKUP_IMPORTED": "Backup importado com sucesso"
   },
   "BUDGET_ALERTS": {
     "TOAST_MESSAGE": "Orçamento: atingiu {{percent}}% do limite ({{limit}})"
@@ -161,6 +174,15 @@
     "DESCRIPTION": "Aplicativo para registro de despesas, receitas e estatísticas.",
     "AUTHOR": "Autor",
     "AUTHOR_NAME": "CCS Solutions"
+  },
+  "ONBOARDING": {
+    "SLIDE1_TITLE": "Controle suas finanças",
+    "SLIDE1_DESC": "Registre despesas e receitas facilmente pelo celular.",
+    "SLIDE2_TITLE": "Estatísticas claras",
+    "SLIDE2_DESC": "Visualize seus gastos por categoria e período com gráficos.",
+    "SLIDE3_TITLE": "Orçamentos inteligentes",
+    "SLIDE3_DESC": "Defina limites e receba alertas antes de ultrapassar.",
+    "START": "Começar"
   },
   "CATEGORIES": {
     "FOOD": "Alimentação",

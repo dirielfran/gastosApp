@@ -8,6 +8,8 @@ export function mapAccountRow(r: Record<string, unknown>): {
   name: string;
   currencyCode: string;
   balance?: number;
+  icon: string | null;
+  color: string | null;
   createdAt: string;
   updatedAt: string;
   isActive: number;
@@ -17,6 +19,8 @@ export function mapAccountRow(r: Record<string, unknown>): {
     name: String(r['name']),
     currencyCode: String(r['currency_code']),
     balance: r['balance'] != null ? Number(r['balance']) : undefined,
+    icon: r['icon'] != null ? String(r['icon']) : null,
+    color: r['color'] != null ? String(r['color']) : null,
     createdAt: String(r['created_at']),
     updatedAt: String(r['updated_at']),
     isActive: Number(r['is_active']),

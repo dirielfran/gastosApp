@@ -36,9 +36,18 @@
       <ion-label position="stacked">{{ 'MOVEMENT_FORM.AMOUNT' | translate }}</ion-label>
       <ion-input [(ngModel)]="amount" type="number" min="0" step="0.01" placeholder="0.00"></ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item button id="open-mov-date">
       <ion-label position="stacked">{{ 'MOVEMENT_FORM.DATE' | translate }}</ion-label>
-      <ion-input [(ngModel)]="movementDate" type="date"></ion-input>
+      <ion-note>{{ movementDate }}</ion-note>
+      <ion-popover trigger="open-mov-date" [showBackdrop]="false">
+        <ng-template>
+          <ion-datetime
+            presentation="date"
+            [value]="movementDate"
+            (ionChange)="movementDate = $any($event).detail.value?.split('T')[0] ?? movementDate"
+          ></ion-datetime>
+        </ng-template>
+      </ion-popover>
     </ion-item>
     <ion-item>
       <ion-label position="stacked">{{ 'MOVEMENT_FORM.NOTE' | translate }}</ion-label>

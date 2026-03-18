@@ -14,7 +14,12 @@
     "TOTAL_INCOME": "Ingresos",
     "TOTAL_EXPENSE": "Gastos",
     "THIS_MONTH": "Este mes",
-    "NO_DATA": "Aún no hay movimientos. Añade gastos o ingresos desde Explorar."
+    "NO_DATA": "Aún no hay movimientos. Añade gastos o ingresos desde Explorar.",
+    "QUICK_ADD": "Nuevo movimiento",
+    "QUICK_TRANSFER": "Transferir",
+    "ACCOUNTS": "Mis cuentas",
+    "BUDGET_WARNINGS": "Presupuestos en alerta",
+    "RECENT_MOVEMENTS": "Últimos movimientos"
   },
   "EXPLORE": {
     "TITLE": "Explorar",
@@ -29,7 +34,8 @@
     "FILTER_CATEGORY": "Categoría",
     "FILTER_DATE_FROM": "Desde",
     "FILTER_DATE_TO": "Hasta",
-    "CLEAR_FILTERS": "Limpiar filtros"
+    "CLEAR_FILTERS": "Limpiar filtros",
+    "SEARCH_PLACEHOLDER": "Buscar por nota o importe..."
   },
   "MORE": {
     "TITLE": "Más",
@@ -39,7 +45,9 @@
     "CATEGORIES": "Categorías",
     "BUDGETS": "Presupuestos",
     "ABOUT": "Acerca de",
-    "RECURRING": "Recurrentes"
+    "RECURRING": "Recurrentes",
+    "TRANSFER": "Transferencia",
+    "EXPORT": "Exportar datos"
   },
   "COMMON": {
     "SAVE": "Guardar",
@@ -69,7 +77,12 @@
     "THEME_DARK": "Oscuro",
     "THEME_SYSTEM": "Según sistema",
     "CURRENCY": "Moneda",
-    "BUDGET_ALERTS": "Avisos de presupuesto"
+    "BUDGET_ALERTS": "Avisos de presupuesto",
+    "DATA": "Datos",
+    "EXPORT_BACKUP": "Exportar backup (JSON)",
+    "IMPORT_BACKUP": "Importar backup",
+    "BACKUP_EXPORTED": "Backup exportado con éxito",
+    "BACKUP_IMPORTED": "Backup importado con éxito"
   },
   "BUDGET_ALERTS": {
     "TOAST_MESSAGE": "Presupuesto: has alcanzado el {{percent}}% del límite ({{limit}})"
@@ -161,6 +174,15 @@
     "DESCRIPTION": "Aplicación para el registro de gastos, ingresos y estadísticas.",
     "AUTHOR": "Autor",
     "AUTHOR_NAME": "CCS Solutions"
+  },
+  "ONBOARDING": {
+    "SLIDE1_TITLE": "Controla tus finanzas",
+    "SLIDE1_DESC": "Registra gastos e ingresos fácilmente desde tu móvil.",
+    "SLIDE2_TITLE": "Estadísticas claras",
+    "SLIDE2_DESC": "Visualiza tus gastos por categoría y periodo con gráficos.",
+    "SLIDE3_TITLE": "Presupuestos inteligentes",
+    "SLIDE3_DESC": "Configura límites y recibe avisos antes de pasarte.",
+    "START": "Comenzar"
   },
   "CATEGORIES": {
     "FOOD": "Comida",

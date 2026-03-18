@@ -22,6 +22,7 @@ export class ExplorePage implements OnInit, OnDestroy, ViewWillEnter {
   loading = true;
   showFilters = false;
 
+  searchText = '';
   filterType: MovementType | '' = '';
   filterAccountId: number | null = null;
   filterCategoryId: number | null = null;
@@ -91,10 +92,16 @@ export class ExplorePage implements OnInit, OnDestroy, ViewWillEnter {
     if (this.filterCategoryId != null) this.filters.categoryId = this.filterCategoryId;
     if (this.filterDateFrom) this.filters.dateFrom = this.filterDateFrom;
     if (this.filterDateTo) this.filters.dateTo = this.filterDateTo;
+    if (this.searchText.trim()) this.filters.searchText = this.searchText.trim();
     this.loadMovements();
   }
 
+  onSearchChange(): void {
+    this.onFilterChange();
+  }
+
   clearFilters(): void {
+    this.searchText = '';
     this.filterType = '';
     this.filterAccountId = null;
     this.filterCategoryId = null;

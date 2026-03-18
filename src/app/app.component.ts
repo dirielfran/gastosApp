@@ -37,6 +37,11 @@ export class AppComponent implements OnInit, OnDestroy {
     if (lang && ['es', 'en', 'pt'].includes(lang)) {
       this.translate.use(lang);
     }
+    const onboarded = await this.settings.getSetting('onboarding_completed', '');
+    if (onboarded !== 'true') {
+      this.router.navigate(['/onboarding'], { replaceUrl: true });
+    }
+
     this.recurringService.applyRecurringForCurrentMonth().catch((err) =>
       console.error('Error applying recurring movements:', err)
     );

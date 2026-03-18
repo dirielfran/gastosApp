@@ -39,5 +39,17 @@
     <ion-item>
       <ion-toggle [(ngModel)]="budgetAlertsEnabled" (ionChange)="onBudgetAlertsChange()"></ion-toggle>
     </ion-item>
+    <ion-list-header>
+      <ion-label>{{ 'SETTINGS.DATA' | translate }}</ion-label>
+    </ion-list-header>
+    <ion-item button (click)="exportBackup()">
+      <ion-icon name="download-outline" slot="start"></ion-icon>
+      <ion-label>{{ 'SETTINGS.EXPORT_BACKUP' | translate }}</ion-label>
+    </ion-item>
+    <ion-item button (click)="triggerImport()">
+      <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+      <ion-label>{{ 'SETTINGS.IMPORT_BACKUP' | translate }}</ion-label>
+    </ion-item>
+    <input type="file" accept=".json" #fileInput hidden (change)="onFileSelected($event)" />
   </ion-list>
 </ion-content>

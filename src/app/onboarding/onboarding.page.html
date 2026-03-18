@@ -1,0 +1,32 @@
+<ion-content [fullscreen]="true" class="onboarding-content">
+  <div class="slides-container">
+    <div class="slide" *ngIf="currentSlide === 0">
+      <ion-icon name="wallet-outline" class="slide-icon" color="primary"></ion-icon>
+      <h2>{{ 'ONBOARDING.SLIDE1_TITLE' | translate }}</h2>
+      <p>{{ 'ONBOARDING.SLIDE1_DESC' | translate }}</p>
+    </div>
+    <div class="slide" *ngIf="currentSlide === 1">
+      <ion-icon name="stats-chart-outline" class="slide-icon" color="secondary"></ion-icon>
+      <h2>{{ 'ONBOARDING.SLIDE2_TITLE' | translate }}</h2>
+      <p>{{ 'ONBOARDING.SLIDE2_DESC' | translate }}</p>
+    </div>
+    <div class="slide" *ngIf="currentSlide === 2">
+      <ion-icon name="shield-checkmark-outline" class="slide-icon" color="tertiary"></ion-icon>
+      <h2>{{ 'ONBOARDING.SLIDE3_TITLE' | translate }}</h2>
+      <p>{{ 'ONBOARDING.SLIDE3_DESC' | translate }}</p>
+    </div>
+  </div>
+
+  <div class="dots">
+    <span class="dot" *ngFor="let d of [0,1,2]" [class.active]="currentSlide === d" (click)="currentSlide = d"></span>
+  </div>
+
+  <div class="ion-padding actions">
+    <ion-button expand="block" fill="clear" *ngIf="currentSlide < 2" (click)="currentSlide = currentSlide + 1">
+      {{ 'COMMON.NEXT' | translate }}
+    </ion-button>
+    <ion-button expand="block" *ngIf="currentSlide === 2" (click)="finish()">
+      {{ 'ONBOARDING.START' | translate }}
+    </ion-button>
+  </div>
+</ion-content>

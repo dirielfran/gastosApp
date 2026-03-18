@@ -25,6 +25,7 @@
 
   <ion-list lines="full" *ngIf="!loading && !error && accounts.length > 0">
     <ion-item *ngFor="let a of accounts" button (click)="goToEdit(a.id)">
+      <ion-icon [name]="a.icon || 'wallet-outline'" slot="start" [style.color]="a.color || ''"></ion-icon>
       <ion-label>
         <h2>{{ a.name }}</h2>
         <p>{{ a.currencyCode }}</p>

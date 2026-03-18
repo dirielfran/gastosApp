@@ -48,6 +48,11 @@ const routes: Routes = [
       import('./about/about.module').then((m) => m.AboutPageModule),
   },
   {
+    path: 'onboarding',
+    loadChildren: () =>
+      import('./onboarding/onboarding.module').then((m) => m.OnboardingPageModule),
+  },
+  {
     path: 'movement/:id',
     loadChildren: () =>
       import('./movement/movement.module').then((m) => m.MovementPageModule),
