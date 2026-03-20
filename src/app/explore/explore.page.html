@@ -132,10 +132,13 @@
     </ion-item>
   </ion-list>
 
+  <ion-infinite-scroll (ionInfinite)="loadMore($event)" [disabled]="!hasMore || loading">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
   <div class="ion-padding" *ngIf="!loading && movements.length === 0">
     <p>{{ 'EXPLORE.NO_MOVEMENTS' | translate }}</p>
     <ion-button expand="block" (click)="goToAddMovement()">{{ 'COMMON.ADD' | translate }}</ion-button>
   </div>
-
 
 </ion-content>

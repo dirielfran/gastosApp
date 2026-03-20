@@ -2,7 +2,7 @@
  * Versión actual del esquema de la base de datos.
  * Incrementar y añadir sentencias en MIGRATIONS al cambiar el esquema.
  */
-export const DB_VERSION = 4;
+export const DB_VERSION = 5;
 
 export const DB_NAME = 'app_gastos_ccs';
 
@@ -153,5 +153,11 @@ ALTER TABLE accounts ADD COLUMN icon TEXT;
 ALTER TABLE accounts ADD COLUMN color TEXT;
 
 INSERT OR IGNORE INTO schema_version (version) VALUES (4);
+`,
+  5: `
+-- Evitar presupuestos duplicados por categoría
+CREATE UNIQUE INDEX IF NOT EXISTS idx_budgets_category_unique ON budgets(category_id) WHERE is_active = 1;
+
+INSERT OR IGNORE INTO schema_version (version) VALUES (5);
 `,
 };

@@ -10,6 +10,8 @@ export interface MovementFilters {
   dateFrom?: string;
   dateTo?: string;
   searchText?: string;
+  limit?: number;
+  offset?: number;
 }
 
 @Injectable({
@@ -49,7 +51,13 @@ export class MovementService {
     }
 
     const where = conditions.length > 0 ? 'WHERE ' + conditions.join(' AND ') : '';
-    const sql = `SELECT * FROM movements ${where} ORDER BY movement_date DESC, id DESC`;
+    let sql = `SELECT * FROM movements ${where} ORDER BY movement_date DESC, id DESC`;
+    if (filters.limit != null) {
+      sql += ` LIMIT ${Math.max(1, Math.floor(filters.limit))}`;
+      if (filters.offset != null) {
+        sql += ` OFFSET ${Math.max(0, Math.floor(filters.offset))}`;
+      }
+    }
     const rows = await this.db.query<Record<string, unknown>>(sql, values);
     return rows.map(mapMovementRow);
   }

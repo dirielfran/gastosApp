@@ -3,7 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { DatabaseService } from './core/database';
-import { ThemeService, ExploreRefreshService, RecurringService } from './core/services';
+import { ThemeService, ExploreRefreshService, RecurringService, BudgetAlertService } from './core/services';
 import { TranslateService } from '@ngx-translate/core';
 import { SettingsService } from './core/services';
 
@@ -23,28 +23,29 @@ export class AppComponent implements OnInit, OnDestroy {
     private settings: SettingsService,
     private router: Router,
     private exploreRefresh: ExploreRefreshService,
-    private recurringService: RecurringService
+    private recurringService: RecurringService,
+    private budgetAlertService: BudgetAlertService
   ) {}
 
   async ngOnInit(): Promise<void> {
     try {
       await this.database.init();
-    } catch (err) {
-      console.error('Database initialization error:', err);
+    } catch {
+      return;
     }
     await this.theme.init();
     const lang = await this.settings.getSetting(this.settings.keys.LANGUAGE, 'es');
     if (lang && ['es', 'en', 'pt'].includes(lang)) {
       this.translate.use(lang);
     }
-    const onboarded = await this.settings.getSetting('onboarding_completed', '');
+    const onboarded = await this.settings.getSetting(this.settings.keys.ONBOARDING_COMPLETED, '');
     if (onboarded !== 'true') {
       this.router.navigate(['/onboarding'], { replaceUrl: true });
     }
 
-    this.recurringService.applyRecurringForCurrentMonth().catch((err) =>
-      console.error('Error applying recurring movements:', err)
-    );
+    this.recurringService.applyRecurringForCurrentMonth().catch(() => {});
+    this.budgetAlertService.cleanupOldAlertKeys().catch(() => {});
+
     this.routerSub = this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
       .subscribe((e) => {

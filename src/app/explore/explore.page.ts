@@ -8,6 +8,8 @@ import type { Movement, MovementType } from '../core/models/movement.model';
 import type { MovementFilters } from '../core/services/movement.service';
 import type { ViewWillEnter } from '@ionic/angular';
 
+const PAGE_SIZE = 30;
+
 @Component({
   selector: 'app-explore',
   templateUrl: './explore.page.html',
@@ -21,6 +23,7 @@ export class ExplorePage implements OnInit, OnDestroy, ViewWillEnter {
   filters: MovementFilters = {};
   loading = true;
   showFilters = false;
+  hasMore = true;
 
   searchText = '';
   filterType: MovementType | '' = '';
@@ -73,11 +76,22 @@ export class ExplorePage implements OnInit, OnDestroy, ViewWillEnter {
     this.loading = true;
     this.cdr.detectChanges();
     try {
-      this.movements = await this.movementService.getAll(this.filters);
+      const paginatedFilters = { ...this.filters, limit: PAGE_SIZE, offset: 0 };
+      this.movements = await this.movementService.getAll(paginatedFilters);
+      this.hasMore = this.movements.length >= PAGE_SIZE;
     } finally {
       this.loading = false;
       this.cdr.detectChanges();
     }
+  }
+
+  async loadMore(event: CustomEvent): Promise<void> {
+    const paginatedFilters = { ...this.filters, limit: PAGE_SIZE, offset: this.movements.length };
+    const more = await this.movementService.getAll(paginatedFilters);
+    this.movements = [...this.movements, ...more];
+    this.hasMore = more.length >= PAGE_SIZE;
+    (event.target as HTMLIonInfiniteScrollElement).complete();
+    this.cdr.detectChanges();
   }
 
   async onRefresh(event: CustomEvent): Promise<void> {

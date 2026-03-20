@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Capacitor } from '@capacitor/core';
 import { DatabaseService } from '../database';
 
 interface BackupData {
@@ -30,21 +31,36 @@ export class BackupService {
       settings: await this.db.query('SELECT * FROM settings', []),
     };
     const json = JSON.stringify(data, null, 2);
+    const filename = `gastos_backup_${new Date().toISOString().slice(0, 10)}.json`;
     const blob = new Blob([json], { type: 'application/json' });
+
+    if (Capacitor.isNativePlatform() || this.canShareFiles()) {
+      try {
+        const file = new File([blob], filename, { type: 'application/json' });
+        await navigator.share({ files: [file], title: 'Backup' });
+        return;
+      } catch {
+        // User cancelled share or not supported — fall through to DOM download
+      }
+    }
+
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `gastos_backup_${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = filename;
     a.click();
     URL.revokeObjectURL(url);
   }
 
   async importBackup(file: File): Promise<void> {
     const text = await file.text();
-    const data: BackupData = JSON.parse(text);
-    if (!data.version || !data.accounts || !data.movements) {
-      throw new Error('Invalid backup file');
+    let data: BackupData;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      throw new Error('BACKUP_INVALID');
     }
+    this.validateBackupData(data);
 
     await this.db.run('DELETE FROM movements', [], true);
     await this.db.run('DELETE FROM budgets', [], true);
@@ -54,9 +70,9 @@ export class BackupService {
 
     for (const a of data.accounts) {
       await this.db.run(
-        `INSERT OR REPLACE INTO accounts (id, name, currency_code, balance, created_at, updated_at, is_active)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [a['id'], a['name'], a['currency_code'], a['balance'] ?? 0, a['created_at'], a['updated_at'], a['is_active'] ?? 1],
+        `INSERT OR REPLACE INTO accounts (id, name, currency_code, balance, icon, color, created_at, updated_at, is_active)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [a['id'], a['name'], a['currency_code'], a['balance'] ?? 0, a['icon'] ?? null, a['color'] ?? null, a['created_at'], a['updated_at'], a['is_active'] ?? 1],
         true
       );
     }
@@ -102,6 +118,29 @@ export class BackupService {
           true
         );
       }
+    }
+  }
+
+  private validateBackupData(data: unknown): asserts data is BackupData {
+    if (!data || typeof data !== 'object') throw new Error('BACKUP_INVALID');
+    const d = data as Record<string, unknown>;
+    if (typeof d['version'] !== 'number') throw new Error('BACKUP_INVALID');
+    if (!Array.isArray(d['accounts'])) throw new Error('BACKUP_INVALID');
+    if (!Array.isArray(d['movements'])) throw new Error('BACKUP_INVALID');
+    if (!Array.isArray(d['categories'])) throw new Error('BACKUP_INVALID');
+    for (const a of d['accounts'] as Record<string, unknown>[]) {
+      if (a['id'] == null || !a['name'] || !a['currency_code']) throw new Error('BACKUP_INVALID');
+    }
+    for (const m of d['movements'] as Record<string, unknown>[]) {
+      if (m['id'] == null || m['account_id'] == null || m['type'] == null || m['amount'] == null) throw new Error('BACKUP_INVALID');
+    }
+  }
+
+  private canShareFiles(): boolean {
+    try {
+      return typeof navigator.share === 'function' && typeof navigator.canShare === 'function';
+    } catch {
+      return false;
     }
   }
 }

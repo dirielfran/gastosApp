@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DatabaseService } from '../core/database';
-import { AccountService, BudgetService, MovementService, SettingsService } from '../core/services';
+import { AccountService, BudgetService, CategoryService, MovementService, SettingsService } from '../core/services';
 import { TranslateService } from '@ngx-translate/core';
 import { formatCurrency } from '../core/utils';
 import type { Account } from '../core/models/account.model';
-import type { Budget } from '../core/models/budget.model';
+import type { Category } from '../core/models/category.model';
 import type { Movement } from '../core/models/movement.model';
 import type { ViewWillEnter } from '@ionic/angular';
 
@@ -24,6 +24,7 @@ export class HomePage implements OnInit, ViewWillEnter {
   currencyCode = 'EUR';
 
   accounts: Account[] = [];
+  categories: Category[] = [];
   recentMovements: Movement[] = [];
   budgetAlerts: { name: string; spent: number; limit: number; percent: number }[] = [];
 
@@ -32,6 +33,7 @@ export class HomePage implements OnInit, ViewWillEnter {
     private movementService: MovementService,
     private accountService: AccountService,
     private budgetService: BudgetService,
+    private categoryService: CategoryService,
     private settings: SettingsService,
     private translate: TranslateService,
     private router: Router
@@ -72,17 +74,20 @@ export class HomePage implements OnInit, ViewWillEnter {
       this.balance = totals.income - totals.expense;
 
       this.accounts = await this.accountService.getAll();
+      this.categories = await this.categoryService.getAll();
 
-      const allMovements = await this.movementService.getAll({ dateFrom: from, dateTo: to });
-      this.recentMovements = allMovements.slice(0, 5);
+      const allMovements = await this.movementService.getAll({ dateFrom: from, dateTo: to, limit: 5 });
+      this.recentMovements = allMovements;
 
       this.budgetAlerts = [];
       const budgets = await this.budgetService.getAll();
+      const spentMap = await this.budgetService.getSpentByAllCategories(from, to);
+      const spentLookup = new Map(spentMap.map((s) => [s.categoryId, s.expense]));
+
       for (const b of budgets) {
-        const spent = await this.budgetService.getSpentInCategory(b.categoryId, from, to);
+        const spent = spentLookup.get(b.categoryId) ?? 0;
         const threshold = (b.amountLimit * b.alertThresholdPercent) / 100;
         if (spent >= threshold) {
-          const cats = await this.budgetService.getByCategoryId(b.categoryId);
           this.budgetAlerts.push({
             name: this.getCategoryNameById(b.categoryId),
             spent,
@@ -96,8 +101,17 @@ export class HomePage implements OnInit, ViewWillEnter {
     }
   }
 
-  private getCategoryNameById(categoryId: number): string {
-    return `#${categoryId}`;
+  async onRefresh(event: CustomEvent): Promise<void> {
+    await this.loadDashboard();
+    (event.target as HTMLIonRefresherElement).complete();
+  }
+
+  getCategoryNameById(categoryId: number): string {
+    const c = this.categories.find((cat) => cat.id === categoryId);
+    if (!c) return '—';
+    if (c.nameCustom) return c.nameCustom;
+    if (c.nameKey) return this.translate.instant(c.nameKey);
+    return '—';
   }
 
   formatMoney(amount: number): string {

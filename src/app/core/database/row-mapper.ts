@@ -119,7 +119,7 @@ export function mapBudgetRow(r: Record<string, unknown>): {
     id: Number(r['id']),
     categoryId: Number(r['category_id']),
     amountLimit: Number(r['amount_limit']),
-    period: (r['period'] === 'monthly' ? 'monthly' : 'monthly') as 'monthly',
+    period: 'monthly' as const,
     alertThresholdPercent: Number(r['alert_threshold_percent']),
     isActive: Number(r['is_active']),
     createdAt: String(r['created_at']),

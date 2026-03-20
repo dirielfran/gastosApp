@@ -17,7 +17,7 @@ export class OnboardingPage {
   ) {}
 
   async finish(): Promise<void> {
-    await this.settings.setSetting('onboarding_completed', 'true');
+    await this.settings.setSetting(this.settings.keys.ONBOARDING_COMPLETED, 'true');
     this.router.navigate(['/tabs/home'], { replaceUrl: true });
   }
 }

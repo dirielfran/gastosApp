@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { DatabaseService } from '../core/database';
 import { AccountService, BudgetAlertService, CategoryService, MovementService } from '../core/services';
 import { TranslateService } from '@ngx-translate/core';
@@ -34,6 +34,7 @@ export class MovementPage implements OnInit {
     private budgetAlertService: BudgetAlertService,
     private translate: TranslateService,
     private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -96,6 +97,7 @@ export class MovementPage implements OnInit {
           photoUri: null,
         });
       }
+      await this.accountService.recalculateBalance(this.accountId);
       if (this.type === 'expense' && this.categoryId != null) {
         await this.budgetAlertService.checkAlertsAfterMovement(
           this.categoryId,
@@ -103,6 +105,13 @@ export class MovementPage implements OnInit {
         );
       }
       this.router.navigate(['/tabs/explore']);
+    } catch {
+      const toast = await this.toastCtrl.create({
+        message: this.translate.instant('COMMON.SAVE_ERROR'),
+        duration: 3000,
+        color: 'danger',
+      });
+      await toast.present();
     } finally {
       this.saving = false;
     }
@@ -126,8 +135,21 @@ export class MovementPage implements OnInit {
 
   private async doDelete(): Promise<void> {
     if (this.id == null) return;
-    await this.movementService.delete(this.id);
-    this.router.navigate(['/tabs/explore']);
+    try {
+      const mov = await this.movementService.getById(this.id);
+      await this.movementService.delete(this.id);
+      if (mov) {
+        await this.accountService.recalculateBalance(mov.accountId);
+      }
+      this.router.navigate(['/tabs/explore']);
+    } catch {
+      const toast = await this.toastCtrl.create({
+        message: this.translate.instant('COMMON.DELETE_ERROR'),
+        duration: 3000,
+        color: 'danger',
+      });
+      await toast.present();
+    }
   }
 
   cancel(): void {

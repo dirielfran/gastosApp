@@ -70,13 +70,22 @@ export class SettingsPage implements OnInit {
   }
 
   async exportBackup(): Promise<void> {
-    await this.backupService.exportBackup();
-    const toast = await this.toastCtrl.create({
-      message: this.translate.instant('SETTINGS.BACKUP_EXPORTED'),
-      duration: 2000,
-      color: 'success',
-    });
-    await toast.present();
+    try {
+      await this.backupService.exportBackup();
+      const toast = await this.toastCtrl.create({
+        message: this.translate.instant('SETTINGS.BACKUP_EXPORTED'),
+        duration: 2000,
+        color: 'success',
+      });
+      await toast.present();
+    } catch {
+      const toast = await this.toastCtrl.create({
+        message: this.translate.instant('COMMON.EXPORT_ERROR'),
+        duration: 3000,
+        color: 'danger',
+      });
+      await toast.present();
+    }
   }
 
   triggerImport(): void {
@@ -97,8 +106,8 @@ export class SettingsPage implements OnInit {
       await toast.present();
     } catch {
       const toast = await this.toastCtrl.create({
-        message: this.translate.instant('COMMON.ERROR'),
-        duration: 2000,
+        message: this.translate.instant('COMMON.BACKUP_INVALID'),
+        duration: 3000,
         color: 'danger',
       });
       await toast.present();

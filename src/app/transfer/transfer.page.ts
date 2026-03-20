@@ -57,9 +57,11 @@ export class TransferPage implements OnInit {
   async save(): Promise<void> {
     if (!this.canSave || this.transferCategoryId == null) return;
     this.saving = true;
+    let expenseMovId: number | null = null;
     try {
       const noteText = `[${this.translate.instant('TRANSFER.TAG')}] ${this.note}`.trim();
-      await this.movementService.create({
+
+      const expenseMov = await this.movementService.create({
         accountId: this.fromAccountId!,
         categoryId: this.transferCategoryId,
         type: 'expense',
@@ -68,6 +70,8 @@ export class TransferPage implements OnInit {
         movementDate: this.transferDate,
         photoUri: null,
       });
+      expenseMovId = expenseMov.id;
+
       await this.movementService.create({
         accountId: this.toAccountId!,
         categoryId: this.transferCategoryId,
@@ -77,6 +81,10 @@ export class TransferPage implements OnInit {
         movementDate: this.transferDate,
         photoUri: null,
       });
+
+      await this.accountService.recalculateBalance(this.fromAccountId!);
+      await this.accountService.recalculateBalance(this.toAccountId!);
+
       const toast = await this.toastCtrl.create({
         message: this.translate.instant('TRANSFER.SUCCESS'),
         duration: 2000,
@@ -85,6 +93,20 @@ export class TransferPage implements OnInit {
       });
       await toast.present();
       this.router.navigate(['/tabs/explore']);
+    } catch {
+      // Compensating: if expense was created but income failed, rollback expense
+      if (expenseMovId != null) {
+        try {
+          await this.movementService.delete(expenseMovId);
+          await this.accountService.recalculateBalance(this.fromAccountId!);
+        } catch { /* best effort */ }
+      }
+      const toast = await this.toastCtrl.create({
+        message: this.translate.instant('COMMON.SAVE_ERROR'),
+        duration: 3000,
+        color: 'danger',
+      });
+      await toast.present();
     } finally {
       this.saving = false;
     }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { DatabaseService } from '../core/database';
 import { BudgetService, CategoryService } from '../core/services';
 import { TranslateService } from '@ngx-translate/core';
@@ -26,6 +26,7 @@ export class BudgetFormPage implements OnInit {
     private categoryService: CategoryService,
     private translate: TranslateService,
     private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -64,6 +65,17 @@ export class BudgetFormPage implements OnInit {
           alertThresholdPercent: this.alertThresholdPercent,
         });
       } else {
+        const existing = await this.budgetService.getByCategoryId(this.categoryId);
+        if (existing) {
+          const toast = await this.toastCtrl.create({
+            message: this.translate.instant('BUDGET_FORM.ALREADY_EXISTS'),
+            duration: 3000,
+            color: 'warning',
+          });
+          await toast.present();
+          this.saving = false;
+          return;
+        }
         await this.budgetService.create({
           categoryId: this.categoryId,
           amountLimit: this.amountLimit,
@@ -73,6 +85,13 @@ export class BudgetFormPage implements OnInit {
         });
       }
       this.router.navigate(['/budgets']);
+    } catch {
+      const toast = await this.toastCtrl.create({
+        message: this.translate.instant('COMMON.SAVE_ERROR'),
+        duration: 3000,
+        color: 'danger',
+      });
+      await toast.present();
     } finally {
       this.saving = false;
     }
@@ -96,8 +115,17 @@ export class BudgetFormPage implements OnInit {
 
   private async doDelete(): Promise<void> {
     if (this.id == null) return;
-    await this.budgetService.delete(this.id);
-    this.router.navigate(['/budgets']);
+    try {
+      await this.budgetService.delete(this.id);
+      this.router.navigate(['/budgets']);
+    } catch {
+      const toast = await this.toastCtrl.create({
+        message: this.translate.instant('COMMON.DELETE_ERROR'),
+        duration: 3000,
+        color: 'danger',
+      });
+      await toast.present();
+    }
   }
 
   cancel(): void {

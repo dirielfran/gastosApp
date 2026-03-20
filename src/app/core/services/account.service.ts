@@ -69,6 +69,14 @@ export class AccountService {
     );
   }
 
+  async countMovementsByAccountId(accountId: number): Promise<number> {
+    const rows = await this.db.query<{ count: number }>(
+      'SELECT COUNT(*) as count FROM movements WHERE account_id = ?',
+      [accountId]
+    );
+    return rows.length > 0 ? Number(rows[0].count) : 0;
+  }
+
   async delete(id: number): Promise<void> {
     await this.db.run('DELETE FROM accounts WHERE id = ?', [id], true);
   }

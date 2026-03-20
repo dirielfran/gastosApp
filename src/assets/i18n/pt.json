@@ -67,7 +67,12 @@
     "CONFIRM_DELETE_MSG": "Tem certeza de que deseja excluir este item? Esta ação não pode ser desfeita.",
     "RETRY": "Tentar novamente",
     "EXPORT": "Exportar",
-    "VERSION": "Versão"
+    "VERSION": "Versão",
+    "SAVE_ERROR": "Erro ao salvar. Tente novamente.",
+    "DELETE_ERROR": "Erro ao excluir.",
+    "HAS_MOVEMENTS": "Não é possível excluir: possui {{count}} movimentos associados.",
+    "EXPORT_ERROR": "Erro ao exportar.",
+    "BACKUP_INVALID": "Arquivo de backup inválido ou corrompido."
   },
   "SETTINGS": {
     "TITLE": "Configurações",
@@ -128,7 +133,8 @@
     "EDIT_TITLE": "Editar orçamento",
     "CATEGORY": "Categoria",
     "MONTHLY_LIMIT": "Limite mensal",
-    "ALERT_PERCENT": "Alerta em %"
+    "ALERT_PERCENT": "Alerta em %",
+    "ALREADY_EXISTS": "Já existe um orçamento ativo para esta categoria."
   },
   "BUDGETS": {
     "SPENT": "Gasto",
@@ -183,6 +189,14 @@
     "SLIDE3_TITLE": "Orçamentos inteligentes",
     "SLIDE3_DESC": "Defina limites e receba alertas antes de ultrapassar.",
     "START": "Começar"
+  },
+  "CSV": {
+    "DATE": "Data",
+    "TYPE": "Tipo",
+    "CATEGORY": "Categoria",
+    "ACCOUNT": "Conta",
+    "AMOUNT": "Valor",
+    "NOTE": "Nota"
   },
   "CATEGORIES": {
     "FOOD": "Alimentação",

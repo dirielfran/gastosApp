@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { DatabaseService } from '../core/database';
 import { RecurringService, AccountService, CategoryService } from '../core/services';
 import { TranslateService } from '@ngx-translate/core';
@@ -34,6 +34,7 @@ export class RecurringFormPage implements OnInit {
     private categoryService: CategoryService,
     private translate: TranslateService,
     private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -94,6 +95,13 @@ export class RecurringFormPage implements OnInit {
         });
       }
       this.router.navigate(['/recurring']);
+    } catch {
+      const toast = await this.toastCtrl.create({
+        message: this.translate.instant('COMMON.SAVE_ERROR'),
+        duration: 3000,
+        color: 'danger',
+      });
+      await toast.present();
     } finally {
       this.saving = false;
     }
@@ -117,8 +125,17 @@ export class RecurringFormPage implements OnInit {
 
   private async doDelete(): Promise<void> {
     if (this.id == null) return;
-    await this.recurringService.delete(this.id);
-    this.router.navigate(['/recurring']);
+    try {
+      await this.recurringService.delete(this.id);
+      this.router.navigate(['/recurring']);
+    } catch {
+      const toast = await this.toastCtrl.create({
+        message: this.translate.instant('COMMON.DELETE_ERROR'),
+        duration: 3000,
+        color: 'danger',
+      });
+      await toast.present();
+    }
   }
 
   cancel(): void {

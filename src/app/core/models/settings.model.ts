@@ -13,4 +13,5 @@ export const SETTINGS_KEYS = {
   LANGUAGE: 'language',
   DEFAULT_CURRENCY: 'default_currency',
   BUDGET_ALERTS_ENABLED: 'budget_alerts_enabled',
+  ONBOARDING_COMPLETED: 'onboarding_completed',
 } as const;

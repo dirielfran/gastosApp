@@ -46,12 +46,10 @@ export class BudgetsPage implements OnInit, ViewWillEnter {
       this.budgets = await this.budgetService.getAll();
       this.categories = await this.categoryService.getAll();
       const { dateFrom, dateTo } = this.getCurrentMonthRange();
+      const spentAll = await this.budgetService.getSpentByAllCategories(dateFrom, dateTo);
+      const spentMap = new Map(spentAll.map((s) => [s.categoryId, s.expense]));
       for (const b of this.budgets) {
-        this.spentByBudgetId[b.id] = await this.budgetService.getSpentInCategory(
-          b.categoryId,
-          dateFrom,
-          dateTo
-        );
+        this.spentByBudgetId[b.id] = spentMap.get(b.categoryId) ?? 0;
       }
     } finally {
       this.loading = false;

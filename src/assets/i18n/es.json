@@ -67,7 +67,12 @@
     "CONFIRM_DELETE_MSG": "¿Estás seguro de que deseas eliminar este elemento? Esta acción no se puede deshacer.",
     "RETRY": "Reintentar",
     "EXPORT": "Exportar",
-    "VERSION": "Versión"
+    "VERSION": "Versión",
+    "SAVE_ERROR": "Error al guardar. Inténtalo de nuevo.",
+    "DELETE_ERROR": "Error al eliminar.",
+    "HAS_MOVEMENTS": "No se puede eliminar: tiene {{count}} movimientos asociados.",
+    "EXPORT_ERROR": "Error al exportar.",
+    "BACKUP_INVALID": "Archivo de backup inválido o corrupto."
   },
   "SETTINGS": {
     "TITLE": "Configuración",
@@ -123,13 +128,6 @@
   "CATEGORIES_PAGE": {
     "NO_CATEGORIES": "No hay categorías."
   },
-  "BUDGET_FORM": {
-    "NEW_TITLE": "Nuevo presupuesto",
-    "EDIT_TITLE": "Editar presupuesto",
-    "CATEGORY": "Categoría",
-    "MONTHLY_LIMIT": "Límite mensual",
-    "ALERT_PERCENT": "Aviso al %"
-  },
   "BUDGETS": {
     "SPENT": "Gastado",
     "LIMIT": "Límite",
@@ -183,6 +181,22 @@
     "SLIDE3_TITLE": "Presupuestos inteligentes",
     "SLIDE3_DESC": "Configura límites y recibe avisos antes de pasarte.",
     "START": "Comenzar"
+  },
+  "CSV": {
+    "DATE": "Fecha",
+    "TYPE": "Tipo",
+    "CATEGORY": "Categoría",
+    "ACCOUNT": "Cuenta",
+    "AMOUNT": "Importe",
+    "NOTE": "Nota"
+  },
+  "BUDGET_FORM": {
+    "NEW_TITLE": "Nuevo presupuesto",
+    "EDIT_TITLE": "Editar presupuesto",
+    "CATEGORY": "Categoría",
+    "MONTHLY_LIMIT": "Límite mensual",
+    "ALERT_PERCENT": "Aviso al %",
+    "ALREADY_EXISTS": "Ya existe un presupuesto activo para esta categoría."
   },
   "CATEGORIES": {
     "FOOD": "Comida",

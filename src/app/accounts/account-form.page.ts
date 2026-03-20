@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { DatabaseService } from '../core/database';
 import { AccountService } from '../core/services';
-import type { AccountCreate } from '../core/models/account.model';
 
 const CURRENCIES = ['EUR', 'USD', 'GBP', 'COP', 'BRL', 'MXN', 'ARS', 'CLP'];
 
@@ -35,6 +34,7 @@ export class AccountFormPage implements OnInit {
     private accountService: AccountService,
     private translate: TranslateService,
     private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -75,12 +75,32 @@ export class AccountFormPage implements OnInit {
         });
       }
       this.router.navigate(['/accounts']);
+    } catch {
+      const toast = await this.toastCtrl.create({
+        message: this.translate.instant('COMMON.SAVE_ERROR'),
+        duration: 3000,
+        color: 'danger',
+      });
+      await toast.present();
     } finally {
       this.saving = false;
     }
   }
 
   async confirmDelete(): Promise<void> {
+    if (this.id == null) return;
+
+    const count = await this.accountService.countMovementsByAccountId(this.id);
+    if (count > 0) {
+      const toast = await this.toastCtrl.create({
+        message: this.translate.instant('COMMON.HAS_MOVEMENTS', { count }),
+        duration: 4000,
+        color: 'warning',
+      });
+      await toast.present();
+      return;
+    }
+
     const alert = await this.alertCtrl.create({
       header: this.translate.instant('COMMON.CONFIRM_DELETE_TITLE'),
       message: this.translate.instant('COMMON.CONFIRM_DELETE_MSG'),
@@ -98,8 +118,17 @@ export class AccountFormPage implements OnInit {
 
   private async doDelete(): Promise<void> {
     if (this.id == null) return;
-    await this.accountService.delete(this.id);
-    this.router.navigate(['/accounts']);
+    try {
+      await this.accountService.delete(this.id);
+      this.router.navigate(['/accounts']);
+    } catch {
+      const toast = await this.toastCtrl.create({
+        message: this.translate.instant('COMMON.DELETE_ERROR'),
+        duration: 3000,
+        color: 'danger',
+      });
+      await toast.present();
+    }
   }
 
   cancel(): void {

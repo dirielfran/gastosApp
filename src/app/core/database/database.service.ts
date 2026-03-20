@@ -48,7 +48,6 @@ export class DatabaseService {
         this.backend = 'native';
         await this.runMigrationsNative();
       } catch (err) {
-        console.error('[DatabaseService] Init (native) failed:', err);
         this.initPromise = null;
         throw err;
       }
@@ -78,10 +77,7 @@ export class DatabaseService {
 
     for (let v = currentVersion + 1; v <= DB_VERSION; v++) {
       const sql = MIGRATIONS[v];
-      if (!sql) {
-        console.warn(`[DatabaseService] No migration for version ${v}`);
-        continue;
-      }
+      if (!sql) continue;
       const statements = sql
         .split(';')
         .map((s) => s.trim())

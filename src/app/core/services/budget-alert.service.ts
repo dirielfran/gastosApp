@@ -25,6 +25,24 @@ export class BudgetAlertService {
    * Tras guardar un gasto: si la categoría tiene presupuesto y el gasto del mes
    * alcanza o supera el % de aviso, muestra un toast (solo una vez por presupuesto por mes).
    */
+  async cleanupOldAlertKeys(): Promise<void> {
+    const now = new Date();
+    const currentKey = `${now.getFullYear()}_${String(now.getMonth() + 1).padStart(2, '0')}`;
+    try {
+      const rows = await this.settings.getSetting('__all_alert_keys', '');
+      if (!rows) return;
+      const keys = rows.split(',').filter((k) => k.trim());
+      const toKeep = keys.filter((k) => k.includes(currentKey));
+      const toDelete = keys.filter((k) => !k.includes(currentKey));
+      for (const k of toDelete) {
+        await this.settings.setSetting(`${ALERTED_KEY_PREFIX}${k}`, '');
+      }
+      await this.settings.setSetting('__all_alert_keys', toKeep.join(','));
+    } catch {
+      // Ignore cleanup errors
+    }
+  }
+
   async checkAlertsAfterMovement(
     categoryId: number,
     movementDate: string
@@ -77,5 +95,12 @@ export class BudgetAlertService {
 
     const newIds = [...ids, String(budget.id)];
     await this.settings.setSetting(key, newIds.join(','));
+
+    const trackKey = '__all_alert_keys';
+    const tracked = await this.settings.getSetting(trackKey, '');
+    const monthKey = `${year}_${month}`;
+    if (!tracked.includes(monthKey)) {
+      await this.settings.setSetting(trackKey, tracked ? `${tracked},${monthKey}` : monthKey);
+    }
   }
 }

@@ -93,34 +93,61 @@ export class RecurringService {
 
     const now = new Date();
     const y = now.getFullYear();
-    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const monthIdx = now.getMonth();
+    const m = String(monthIdx + 1).padStart(2, '0');
+    const tag = this.translate.instant('RECURRING.TAG');
     let count = 0;
 
     for (const rec of recs) {
-      if (rec.frequency !== 'monthly') continue;
-      const day = String(Math.min(rec.dayOfMonth, new Date(y, now.getMonth() + 1, 0).getDate())).padStart(2, '0');
-      const movDate = `${y}-${m}-${day}`;
+      const dates = this.getRecurringDatesForMonth(rec.frequency, rec.dayOfMonth, y, monthIdx);
 
-      const tag = this.translate.instant('RECURRING.TAG');
-      const existing = await this.db.query<{ cnt: number }>(
-        `SELECT COUNT(*) as cnt FROM movements
-         WHERE account_id = ? AND category_id = ? AND type = ? AND amount = ? AND movement_date = ?
-         AND note LIKE ?`,
-        [rec.accountId, rec.categoryId, rec.type, rec.amount, movDate, `[${tag}]%`]
-      );
-      if (existing.length > 0 && Number(existing[0].cnt) > 0) continue;
+      for (const movDate of dates) {
+        const existing = await this.db.query<{ cnt: number }>(
+          `SELECT COUNT(*) as cnt FROM movements
+           WHERE account_id = ? AND category_id = ? AND type = ? AND amount = ? AND movement_date = ?
+           AND note LIKE ?`,
+          [rec.accountId, rec.categoryId, rec.type, rec.amount, movDate, `[${tag}]%`]
+        );
+        if (existing.length > 0 && Number(existing[0].cnt) > 0) continue;
 
-      await this.movementService.create({
-        accountId: rec.accountId,
-        categoryId: rec.categoryId,
-        type: rec.type,
-        amount: rec.amount,
-        note: `[${tag}] ${rec.note ?? ''}`.trim(),
-        movementDate: movDate,
-        photoUri: null,
-      });
-      count++;
+        await this.movementService.create({
+          accountId: rec.accountId,
+          categoryId: rec.categoryId,
+          type: rec.type,
+          amount: rec.amount,
+          note: `[${tag}] ${rec.note ?? ''}`.trim(),
+          movementDate: movDate,
+          photoUri: null,
+        });
+        count++;
+      }
     }
     return count;
+  }
+
+  private getRecurringDatesForMonth(
+    frequency: 'monthly' | 'weekly',
+    dayOfMonth: number,
+    year: number,
+    monthIdx: number
+  ): string[] {
+    const m = String(monthIdx + 1).padStart(2, '0');
+    const lastDayOfMonth = new Date(year, monthIdx + 1, 0).getDate();
+
+    if (frequency === 'monthly') {
+      const day = String(Math.min(dayOfMonth, lastDayOfMonth)).padStart(2, '0');
+      return [`${year}-${m}-${day}`];
+    }
+
+    // Weekly: dayOfMonth represents day of week (1=Mon ... 7=Sun)
+    const targetDow = ((dayOfMonth - 1) % 7);
+    const dates: string[] = [];
+    for (let d = 1; d <= lastDayOfMonth; d++) {
+      const date = new Date(year, monthIdx, d);
+      if (date.getDay() === targetDow) {
+        dates.push(`${year}-${m}-${String(d).padStart(2, '0')}`);
+      }
+    }
+    return dates;
   }
 }
